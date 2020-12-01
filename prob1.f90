@@ -24,11 +24,10 @@ program main
    outer: do i = 1, size(expenses)
       do j = i+1, size(expenses)
          if (expenses(i) + expenses(j) == 2020) then
-             write(*,*) expenses(i), expenses(j), expenses(i)*expenses(j)
+             write(*,*) expenses(i)*expenses(j)
          end if
          do k = j+1, size(expenses)
             if (expenses(i)+expenses(j)+expenses(k) == 2020) then
-               write(*,*) expenses(i),expenses(j),expenses(k)
                write(*,*) expenses(i)*expenses(j)*expenses(k)
                exit
             end if
