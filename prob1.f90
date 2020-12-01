@@ -4,7 +4,7 @@ program main
    character(len=80)         :: msg
 
 
-   open (unit=9, file='input1.txt', status='OLD', action='READ', &
+   open (unit=9, file='data/input1.txt', status='OLD', action='READ', &
            iostat=status)
 
    fileopen: if (status == 0) then
