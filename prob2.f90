@@ -27,7 +27,6 @@ program main
          password = trim(msg(j+1:))
          p = 2
          num = 0
-         write(*,*) msg
          if (password(min_num+1:min_num+1) == c .neqv. password(max_num+1:max_num+1) == c) then
              valid = valid + 1
          end if
