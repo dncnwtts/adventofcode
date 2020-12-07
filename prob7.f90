@@ -2,7 +2,7 @@ program main
    implicit none
    integer                   :: prod, i, j, k, l, status, ioerror, nvals=0, n=0
    character(len=88)         :: msg, container, contents
-   character(len=88)         :: bag
+   character(len=88)         :: bag, root
    character(len=10)         :: err_string
    character(len=88), allocatable, dimension(:) :: a
    character(len=100000) :: baglist
@@ -40,8 +40,10 @@ program main
    end if fileopen
 
    do i=1, nvals
-       call is_in_tree(bag, i, a, baglist, n)
+       write(*,*) a(i), i, nvals
+       call is_in_tree(bag, a(i), i, a, baglist, n)
    end do
+   !write(*,*) trim(baglist), n
    write(*,*) n
 
 
@@ -50,9 +52,9 @@ program main
 contains
 
 
-    recursive subroutine is_in_tree(bag, start_int, a, baglist, n_out)
+    recursive subroutine is_in_tree(bag, root, start_int, a, baglist, n_out)
         implicit none
-        character(len=88)             :: bag, bags
+        character(len=88)             :: bag, root, bags
         integer, intent(in) :: start_int
         integer, intent(inout) :: n_out
         character(len=100000), intent(inout) :: baglist
@@ -62,8 +64,6 @@ contains
         integer :: i, j, k, l, m, n
 
         line = a(start_int)
-        write(*,*) bag
-        !write(*,*) 'Searching for ', trim(bag)
         
         i = index(line, 'contain')
         container = line(1:i-2)
@@ -72,13 +72,18 @@ contains
         !write(*,*) trim(bags)
         j = index(bags, 'no other')
         if (j .ne. 0) then
-            !write(*,*) 'Found bottom'
             return
         end if
         k = index(bags, trim(bag))
         if (k .ne. 0) then
-            !write(*,*) 'Found bag in question, in ', trim(container)
-            n_out = n_out + 1
+            !write(*,*) 'Found ', trim(bag), ' in question, in ', trim(container), trim(root)
+            ! Update baglist
+            l = index(baglist, trim(root))
+            if (l == 0) then
+                l = index(baglist, '       ')
+                baglist(l+1:len(trim(root))+l+1) = trim(root)
+                n_out = n_out + 1
+            end if
             return
         end if
 
@@ -86,14 +91,16 @@ contains
         ! do loop here, exit when no commas are left.
         do
             l = index(bags, ',')
+            !write(*,*) trim(bags(:l-1)), trim(bags(l+1:))
             if (l == 0) then
                 m = index(bags, '     ')
                 do n = start_int+1, nvals
-                   call is_in_tree(bags(4:m-3), n, a, baglist, n_out)
+                   call is_in_tree(bag, root, n, a, baglist, n_out)
                 end do
                 exit
+            else
+                bags = bags(l+1:)
             end if
-            bags = bags(l+1:)
 
         end do
 
