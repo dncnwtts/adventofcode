@@ -3,7 +3,6 @@ program main
    integer                   :: prod, i, j, k, l, status, ioerror, nvals=0, n=0
    character(len=88)         :: msg, container, contents
    character(len=88)         :: bag
-   integer, dimension(26)    :: forms
    character(len=10)         :: err_string
    character(len=88), allocatable, dimension(:) :: a
    character(len=100000) :: baglist
@@ -40,9 +39,9 @@ program main
       write(*,*) 'oops'
    end if fileopen
 
-
-   call traverse(bag, a, n, baglist)
-   write(*,*) trim(baglist)
+   do i=1, nvals
+       call is_in_tree(bag, i, a, baglist, n)
+   end do
    write(*,*) n
 
 
@@ -50,35 +49,54 @@ program main
 
 contains
 
-    recursive subroutine traverse(bag, a, n, baglist)
+
+    recursive subroutine is_in_tree(bag, start_int, a, baglist, n_out)
         implicit none
-        character(len=88)             :: bag
-        character(len=88), intent(in), dimension(:) :: a
-        character(len=88)         :: msg, container, contents
-        integer, intent(inout) :: n
+        character(len=88)             :: bag, bags
+        integer, intent(in) :: start_int
+        integer, intent(inout) :: n_out
         character(len=100000), intent(inout) :: baglist
+        character(len=88)         :: msg, container, contents, line
+        character(len=88), intent(in), dimension(:) :: a
 
-        integer :: nvals, i, j, k, l, m
+        integer :: i, j, k, l, m, n
 
-        nvals = size(a)
+        line = a(start_int)
+        write(*,*) bag
+        !write(*,*) 'Searching for ', trim(bag)
+        
+        i = index(line, 'contain')
+        container = line(1:i-2)
+        bags = line(i+len('contain'):)
+        !write(*,*) trim(container)
+        !write(*,*) trim(bags)
+        j = index(bags, 'no other')
+        if (j .ne. 0) then
+            !write(*,*) 'Found bottom'
+            return
+        end if
+        k = index(bags, trim(bag))
+        if (k .ne. 0) then
+            !write(*,*) 'Found bag in question, in ', trim(container)
+            n_out = n_out + 1
+            return
+        end if
 
-        do k=1, nvals
-           msg = a(k)
-           i = index(msg, 'contain')
-           j = index(msg(i+8:), trim(bag))
-           container = msg(1:i-2)
-           if (j > 0) then
-               l = index(baglist, trim(container))
-               !if (l == 0) then
-                   m = index(baglist, '                   ')
-                   baglist(m+2:m+len(trim(container))+2) = trim(container)
-                   n = n + 1
-               !end if
-               call traverse(container, a, n, baglist)
-           end if
+
+        ! do loop here, exit when no commas are left.
+        do
+            l = index(bags, ',')
+            if (l == 0) then
+                m = index(bags, '     ')
+                do n = start_int+1, nvals
+                   call is_in_tree(bags(4:m-3), n, a, baglist, n_out)
+                end do
+                exit
+            end if
+            bags = bags(l+1:)
+
         end do
 
-
-    end subroutine traverse
+    end subroutine is_in_tree
 
 end program main
