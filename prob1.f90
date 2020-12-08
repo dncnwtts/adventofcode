@@ -1,7 +1,6 @@
 program main
    integer, dimension(1000) :: expenses=0
-   integer                   :: prod, i, j, k, status, temp
-   character(len=80)         :: msg
+   integer                  :: i, j, k, status, temp
 
 
    open (unit=9, file='data/input1.txt', status='OLD', action='READ', &

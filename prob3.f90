@@ -1,14 +1,8 @@
 program main
    implicit none
-   integer, dimension(1000)  :: expenses=0
-   integer                   :: prod, iold=0, i=0, j=1, k=0, status, ierror, num=0
-   character(len=31)         :: msg, err_string
-   character(len=5)          :: ind_1, ind_2
+   integer                   :: num=0
+   character(len=31)         :: msg
 
-
-   integer, allocatable      :: right, down
-   character(len=1)          :: c
-   character(:), allocatable :: password
 
    open (unit=9, file='data/input3.txt', status='OLD', action='READ')
    !call get_hits(1, 1, num)
@@ -33,7 +27,7 @@ contains
    subroutine get_hits(right, down, num)
         integer, intent(in)  :: right, down
         integer, intent(out) :: num
-        integer              :: i, j, status, ierror
+        integer              :: i, j, status
         character(len=1)     :: c
 
         num = 0

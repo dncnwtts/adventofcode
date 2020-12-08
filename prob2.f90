@@ -1,11 +1,9 @@
 program main
-   integer, dimension(1000)  :: expenses=0
-   integer                   :: prod, i, j, k, status, ierror
+   integer                   :: i, j, status
    character(len=40)         :: msg, err_string
-   character(len=5)          :: ind_1, ind_2
 
 
-   integer                   :: min_num, max_num, num, p, n_valid=0, n_valid2=0, valid
+   integer                   :: min_num, max_num, num, p, n_valid=0, valid
    character(len=1)          :: c
    character(:), allocatable :: password
 

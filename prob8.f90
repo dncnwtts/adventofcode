@@ -1,9 +1,8 @@
 program main
    implicit none
-   integer                   :: i, j, k, l, status, istat, ioerror
-   integer                   :: ind=1, n_hits=1, nvals=0, acc=0
-   character(len=88)         :: msg, container, contents, line
-   character(len=88)         :: bag, root, bags
+   integer                   :: i, j, k, l, status, ioerror
+   integer                   :: ind=1, nvals=0, acc=0
+   character(len=88)         :: msg
    character(len=10)         :: err_string
    character(len=88), allocatable, dimension(:) :: a, b
    integer, allocatable, dimension(:) :: counts

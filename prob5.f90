@@ -2,7 +2,7 @@ program main
    implicit none
    integer, dimension(1000)  :: IDs=0
    integer, dimension(1024)  :: ID_inds=0
-   integer                   :: prod, i, j, k, status, ioerror, n=0
+   integer                   :: status, ioerror, n=0
    character(len=10)         :: msg, err_string
 
    open (unit=9, file='data/input5.txt', status='OLD', action='READ', &

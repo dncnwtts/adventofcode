@@ -1,15 +1,12 @@
 program main
    implicit none
-   integer, dimension(1000)  :: expenses=0
-   integer                   :: prod, i, j, k, status, ioerror, n
+   integer                   :: j, k, status, ioerror, n
    character(len=200)         :: msg, err_string
-   character(len=5)          :: ind_1, ind_2
 
 
    integer                   :: n_valid=0, n_invalid=0
-   integer                   :: byr=0, iyr=0, eyr=0, hgt=0, hcl=0, ecl=0, pid=0, cid=0, s
-   character(len=1)          :: c
-   character(:), allocatable :: password
+   integer                   :: byr=0, iyr=0, eyr=0, hgt=0, hcl=0
+   integer                   :: ecl=0, pid=0, cid=0, s
 
 
 
