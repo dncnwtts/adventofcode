@@ -8,8 +8,9 @@ and executing results with
 `./a.out`
 
 
-To compile, e.g., the test file, execute
+To compile, e.g., problem 7, execute
 ```
-gfortran -c test_hashtbl.f90 hashtbl.f90 
-gfortran hashtbl.o test_hashtbl.o
+gfortran -c hashtbl.f90 
+gfortran prob7.f90 hashtbl.f90  -g -Wall
+
 ```
