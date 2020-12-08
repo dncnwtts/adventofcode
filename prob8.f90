@@ -7,18 +7,18 @@ program main
    character(len=88), allocatable, dimension(:) :: a, b
    integer, allocatable, dimension(:) :: counts
 
-   open (unit=9, file='data/input8.txt', status='OLD', action='READ', &
-           iostat=ioerror, iomsg=err_string)
+   open (unit = 9, file = 'data/input8.txt', status = 'OLD', action = 'READ', &
+           iostat = ioerror, iomsg = err_string)
 
    fileopen: if (status == 0) then
       do
-         read(9, '(A)', iostat=status) msg
+         read(9, '(A)', iostat = status) msg
          if (status /= 0) exit
          nvals = nvals + 1
       end do
 
       ! allocate memory
-      allocate( a(nvals), stat=status)
+      allocate( a(nvals), stat = status)
       allocate( counts(nvals) )
       counts = 0
 
@@ -27,8 +27,8 @@ program main
       else
           write(*,*) status
       end if
-      do i=1, nvals
-         read(9, '(A)',iostat=status) a(i)
+      do i = 1, nvals
+         read(9, '(A)',iostat = status) a(i)
       end do
    else fileopen
       write(*,*) 'oops'
@@ -66,7 +66,7 @@ program main
 
    write(*,*) acc
 
-   do j=1, nvals
+   do j = 1, nvals
       b = a
       if (index(a(j), 'jmp') .ne. 0) then
           k = index(a(j), 'jmp')

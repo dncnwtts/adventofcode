@@ -10,12 +10,12 @@ program main
 
    forms = 0
 
-   open (unit=9, file='data/input6.txt', status='OLD', action='READ', &
-           iostat=ioerror, iomsg=err_string)
+   open (unit = 9, file = 'data/input6.txt', status = 'OLD', action = 'READ', &
+           iostat = ioerror, iomsg = err_string)
 
    fileopen: if (status == 0) then
       do
-         read(9, '(A)', iostat=status) msg
+         read(9, '(A)', iostat = status) msg
          if (status /= 0) exit
          if (len(trim(msg)) == 0) then
             forms = forms/m
@@ -23,7 +23,7 @@ program main
             forms = 0
             m = 0
          else
-            do i=1, len(trim(msg))
+            do i = 1, len(trim(msg))
                 j = index(alphabet, msg(i:i))
                 forms(j) = forms(j) + 1
             end do

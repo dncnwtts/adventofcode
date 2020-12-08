@@ -5,12 +5,12 @@ program main
    integer                   :: status, ioerror, n=0
    character(len=10)         :: msg, err_string
 
-   open (unit=9, file='data/input5.txt', status='OLD', action='READ', &
-           iostat=ioerror, iomsg=err_string)
+   open (unit = 9, file = 'data/input5.txt', status = 'OLD', action = 'READ', &
+           iostat = ioerror, iomsg = err_string)
 
    fileopen: if (status == 0) then
       do
-         read(9, '(A)', iostat=status) msg
+         read(9, '(A)', iostat = status) msg
          if (status /= 0) exit
          n = n +1
          call binary_split(msg, IDs(n))
@@ -28,7 +28,7 @@ contains
    subroutine binary_split(msg, ID)
       implicit none
       character(len=10), intent(in)    :: msg
-      integer,  intent(out):: ID
+      integer,  intent(out) :: ID
 
       integer  :: i, row, column, min, max
       character(len=1)  :: c

@@ -5,22 +5,22 @@ program main
 
 
    open (unit=9, file='data/input3.txt', status='OLD', action='READ')
-   !call get_hits(1, 1, num)
-   !write(*,*) num
+   ! call get_hits(1, 1, num)
+   ! write(*,*) num
 
-   !call get_hits(3, 1, num)
-   !write(*,*) num
+   ! call get_hits(3, 1, num)
+   ! write(*,*) num
 
-   !call get_hits(5, 1, num)
-   !write(*,*) num
+   ! call get_hits(5, 1, num)
+   ! write(*,*) num
 
-   !call get_hits(7, 1, num)
-   !write(*,*) num
+   ! call get_hits(7, 1, num)
+   ! write(*,*) num
 
    call get_hits(1, 2, num)
    write(*,*) num
 
-   close (unit=9)
+   close (unit = 9)
 
 contains
 
@@ -31,13 +31,13 @@ contains
         character(len=1)     :: c
 
         num = 0
-        i=1
-        j=1
+        i = 1
+        j = 1
         fileopen: if (status == 0) then
            do
-              read(9, '(A)', iostat=status) msg
+              read(9, '(A)', iostat = status) msg
               if (status /= 0) exit
-              if (mod(i,down) == 1 .or. down == 1) then
+              if (mod(i, down) == 1 .or. down == 1) then
                  c = msg(j:j)
                  if (c == '#') then
                     num = num + 1

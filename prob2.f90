@@ -9,13 +9,13 @@ program main
 
 
 
-   open (unit=9, file='data/input2.txt', status='OLD', action='READ', &
-           iostat=ioerror, iomsg=err_string)
+   open (unit = 9, file = 'data/input2.txt', status = 'OLD', action = 'READ', &
+           iostat = ioerror, iomsg = err_string)
 
 
    fileopen: if (status == 0) then
       do
-         read(9, '(A)', iostat=status) msg
+         read(9, '(A)', iostat = status) msg
          if (status /= 0) exit
          i = index(msg, '-')
          j = index(msg, ':')

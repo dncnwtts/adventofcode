@@ -3,12 +3,12 @@ program main
    integer                  :: i, j, k, status, temp
 
 
-   open (unit=9, file='data/input1.txt', status='OLD', action='READ', &
-           iostat=status)
+   open (unit = 9, file = 'data/input1.txt', status = 'OLD', action = 'READ', &
+           iostat = status)
 
    fileopen: if (status == 0) then
       do
-         read(9, *, iostat=status) temp
+         read(9, *, iostat = status) temp
          if (status /= 0) exit
          nvals = nvals + 1
          expenses(nvals) = temp
@@ -17,8 +17,6 @@ program main
       write(*,*) 'oops'
    end if fileopen
 
-
-   !expenses(1:6) = (/1721, 979, 366, 299, 675, 1456/)
 
    outer: do i = 1, size(expenses)
       do j = i+1, size(expenses)

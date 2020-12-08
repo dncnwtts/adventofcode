@@ -22,43 +22,43 @@ program main
         baglist(i:i) = ' '
    end do
 
-   open (unit=9, file='data/input7.txt', status='OLD', action='READ', &
-           iostat=ioerror, iomsg=err_string)
+   open (unit = 9, file = 'data/input7.txt', status = 'OLD', action = 'READ', &
+           iostat = ioerror, iomsg = err_string)
 
    fileopen: if (status == 0) then
       do
-         read(9, '(A)', iostat=status) msg
+         read(9, '(A)', iostat = status) msg
          if (status /= 0) exit
          nvals = nvals + 1
       end do
 
       ! allocate memory
-      allocate( a(nvals), stat=status)
-      allocate( containers(nvals), stat=status)
+      allocate( a(nvals), stat = status)
+      allocate( containers(nvals), stat = status)
 
       if (status == 0) then
           rewind( unit = 9)
       else
           write(*,*) status
       end if
-      do i=1, nvals
-         read(9, '(A)',iostat=status) a(i)
+      do i = 1, nvals
+         read(9, '(A)',iostat = status) a(i)
       end do
 
-      do i=1, nvals
+      do i = 1, nvals
           line = a(i)
           j = index(line, 'contain')
           k = index(line, 'bag')
           container = line(1:k-1)
           bags = line(j+len('contain'):)
-          call table%put(key=trim(container), val=bags)
+          call table%put(key = trim(container), val = bags)
 
           containers(i) = container
 
-          call table%get(key=trim(container), val=out)
+          call table%get(key = trim(container), val = out)
       end do
 
-      do i =1, nvals
+      do i = 1, nvals
          call is_in_table(containers(i), table, n, success)
       end do
       write(*,*) n
@@ -96,7 +96,7 @@ contains
 
         if (trim(bag) == 'shiny gold') return
 
-        call table%get(key=trim(bag), val=out)
+        call table%get(key = trim(bag), val = out)
         bags = out
 
 
@@ -122,7 +122,7 @@ contains
                end if
                m = index(bags, 'bag')
                container = trim(bags(4:m-1))
-               call is_in_table(container, table,n_out, success)
+               call is_in_table(container, table, n_out, success)
                if (success == 1) then
                    exit
                end if
@@ -150,7 +150,7 @@ contains
         success = 0
 
 
-        call table%get(key=trim(bag), val=out)
+        call table%get(key = trim(bag), val = out)
         bags = out
 
 
