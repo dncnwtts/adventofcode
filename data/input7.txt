@@ -592,4 +592,3 @@ mirrored purple bags contain 5 drab green bags, 2 clear green bags.
 striped plum bags contain 5 dim white bags, 4 dark teal bags.
 dim lavender bags contain 5 striped bronze bags, 3 wavy maroon bags.
 dim chartreuse bags contain 3 shiny gold bags, 2 mirrored olive bags.
-

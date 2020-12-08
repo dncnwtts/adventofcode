@@ -1,3 +1,9 @@
+'''
+This code comes from reddit user /u/polaris64
+https://www.reddit.com/r/adventofcode/comments/k8a31f/2020_day_07_solutions/gexk6p0?utm_source=share&utm_medium=web2x&context=3
+'''
+
+
 from functools import lru_cache
 import re
 
@@ -64,11 +70,11 @@ def solve_p2(inp):
     return count_total_bags("shiny gold", inp) - 1
 
 def main():
-    inp = read_input("_input7.txt")
+    inp = read_input("input7.txt")
     sln1 = solve_p1(inp)
     print("The solution to part 1 is: {}".format(sln1))
-    #sln2 = solve_p2(inp)
-    #print("The solution to part 2 is: {}".format(sln2))
+    sln2 = solve_p2(inp)
+    print("The solution to part 2 is: {}".format(sln2))
 
 def test_main():
     inp = read_input("input7.txt")
