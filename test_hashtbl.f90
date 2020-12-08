@@ -76,7 +76,7 @@ PROGRAM test_hashtbl
   CALL table%get('height',out)
   PRINT*, out
 
-  ! INCLUDE 'stress_test.f90'
+  !INCLUDE 'stress_test.f90'
 
   PRINT*, ' '
 
