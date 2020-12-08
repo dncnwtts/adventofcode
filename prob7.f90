@@ -8,7 +8,6 @@ program main
    character(len=charlen)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a
    character(len=charlen), allocatable, dimension(:) :: containers
-   character(len=100000) :: baglist
    character(len=:), allocatable :: out
    
    type(hash_tbl_sll)        :: table
@@ -16,11 +15,6 @@ program main
 
    call table%init(tbl_length)
 
-
-   bag = 'shiny gold'
-   do i = 1, len(baglist)
-        baglist(i:i) = ' '
-   end do
 
    open (unit = 9, file = 'data/input7.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
@@ -51,11 +45,9 @@ program main
           k = index(line, 'bag')
           container = line(1:k-1)
           bags = line(j+len('contain'):)
+
           call table%put(key = trim(container), val = bags)
-
           containers(i) = container
-
-          call table%get(key = trim(container), val = out)
       end do
 
       do i = 1, nvals
@@ -66,7 +58,7 @@ program main
 
       n = 0
       bag = 'shiny gold'
-      call num_in_table(bag, table,  n, success)
+      call num_in_table(bag, table,  n)
       write(*,*) n
 
 
@@ -83,7 +75,7 @@ contains
     recursive subroutine is_in_table(bag, table, n_out, success)
         implicit none
         character(len=charlen), intent(in)    :: bag
-        type(hash_tbl_sll), intent(inout)   :: table
+        type(hash_tbl_sll), intent(in)        :: table
         integer, intent(inout) :: n_out
         integer, intent(out) :: success
         character(len=charlen)  :: bags=' ', container=' ', next
@@ -131,12 +123,11 @@ contains
         end if
     end subroutine is_in_table
 
-    recursive subroutine num_in_table(bag, table, n_out, success)
+    recursive subroutine num_in_table(bag, table, n_out)
         implicit none
         character(len=charlen), intent(in)    :: bag
         type(hash_tbl_sll), intent(inout)   :: table
         integer, intent(inout) :: n_out
-        integer, intent(out) :: success
         character(len=charlen)  :: bags=' ', container=' ', next
         character(len=:), allocatable :: out
 
@@ -147,7 +138,6 @@ contains
         n_containers = 0
 
 
-        success = 0
 
 
         call table%get(key = trim(bag), val = out)
@@ -168,7 +158,7 @@ contains
                j = index(bags, 'bag')
                container = trim(bags(4:j-1))
                read(bags(1:3),*) n
-               call num_in_table(container, table, m, success)
+               call num_in_table(container, table, m)
                if (m == 0) then
                    n_out = n_out + n
                else
