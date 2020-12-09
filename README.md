@@ -14,3 +14,6 @@ gfortran -c hashtbl.f90
 gfortran prob7.f90 hashtbl.f90  -g -Wall
 
 ```
+
+
+Using `fortran-linter probx.f90 -i` (installed with `pip install fortran-linter`).
