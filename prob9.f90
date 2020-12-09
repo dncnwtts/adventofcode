@@ -1,6 +1,6 @@
 program main
    implicit none
-   integer                   :: i, j, k, l, buff, status, ioerror
+   integer                   :: i, j, k, l, buff, status, ioerror, answer1
    integer                   :: ind=1, nvals=0, acc=0
    character(len=88)         :: msg
    character(len=10)         :: err_string
@@ -30,8 +30,8 @@ program main
          read(9, *, iostat = status) a(i)
       end do
 
-      buff = 5
-      outer: do i=buff+1, nvals
+      buff = 25
+      do i=buff+1, nvals
           do j=i-buff, i-1
               do k=j+1, i-1
                   if (a(i) ==  a(j)+a(k)) then
@@ -39,10 +39,22 @@ program main
                   end if
               end do
           end do
+      end do
+
+      l = minloc(counts(buff+1:), 1)+buff
+      answer1 = a(l)
+      write(*,*) answer1
+
+
+      outer: do j=1, l
+          do k=j+1, l
+              if (sum(a(j:k)) == answer1) then
+                  write(*,*) minval(a(j:k)) + maxval(a(j:k))
+                  exit outer
+              end if
+          end do
       end do outer
 
-      i = minloc(counts(buff+1:), 1)+buff
-      write(*,*) a(i)
 
       deallocate(a, counts)
 
