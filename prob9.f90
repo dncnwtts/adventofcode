@@ -1,11 +1,11 @@
 program main
    implicit none
    integer                   :: i, j, k, l, buff, status, ioerror, answer1
-   integer                   :: ind=1, nvals=0, acc=0
+   integer                   :: nvals=0
    character(len=88)         :: msg
    character(len=10)         :: err_string
    integer, allocatable, dimension(:) :: a
-   integer, allocatable, dimension(:) :: counts, ls, hs
+   integer, allocatable, dimension(:) :: counts
 
    open (unit = 9, file = 'data/input9.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
