@@ -31,9 +31,9 @@ program main
       end do
 
       buff = 25
-      do i=buff+1, nvals
-          do j=i-buff, i-1
-              do k=j+1, i-1
+      do i = buff+1, nvals
+          do j = i-buff, i-1
+              do k = j+1, i-1
                   if (a(i) ==  a(j)+a(k)) then
                       counts(i) = 1
                   end if
@@ -46,8 +46,8 @@ program main
       write(*,*) answer1
 
 
-      outer: do j=1, l
-          do k=j+1, l
+      outer: do j = 1, l
+          do k = j+1, l
               if (sum(a(j:k)) == answer1) then
                   write(*,*) minval(a(j:k)) + maxval(a(j:k))
                   exit outer
