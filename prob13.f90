@@ -55,7 +55,7 @@ program main
        read(9, '(A)', iostat = status) msg
        if (status /= 0) exit
        if (i == 2) then
-         do k=1, nvals
+         do k = 1, nvals
            j = index(msg, ',')
            if (j .ne. 0) then
              if (msg(:j-1) .ne. 'x') read(msg(:j-1),*) a(k)
@@ -114,10 +114,10 @@ program main
 
    contains
 
-     subroutine extended_gcd(a,b, old_s, old_t)
+     subroutine extended_gcd(a, b, old_s, old_t)
        ! From Extended Euclidean Algorithm on Wikipedia
 
-       !function extended_gcd(a, b)
+       ! function extended_gcd(a, b)
        !    (old_r, r) := (a, b)
        !    (old_s, s) := (1, 0)
        !    (old_t, t) := (0, 1)
