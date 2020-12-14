@@ -1,5 +1,6 @@
 program main
    use hashtbl
+   use dictionary_m
    implicit none
    integer, parameter        :: tbl_length = 10000000, charlen=36
    integer                   :: i, j, k, status, ioerror
@@ -12,10 +13,15 @@ program main
    character(len=80) :: line, dir
    integer(kind=16), allocatable, dimension(:) :: addresses
 
-   type(hash_tbl_sll)        :: table
+
+   type(dictionary_t) :: d
+
+   call d%init(tbl_length)
+
+   !type(hash_tbl_sll)        :: table
 
 
-   call table%init(tbl_length)
+   !call table%init(tbl_length)
 
 
    open (unit = 9, file = 'data/input14.txt', status = 'OLD', action = 'READ', &
@@ -82,19 +88,21 @@ program main
           read(a(i)(j+1:k-1), *) mem
           j = index(a(i), '=')
           read(a(i)(j+1:), *) m
-          call memory_decode(mask, mem, m, table)
+          call memory_decode(mask, mem, m, d)
         end if
       end do
 
       ! Get sum of all allocated elements
       write(*,*) 'Getting sum'
       m = 0
-      do i = lbound(table%vec, dim=1), ubound(table%vec, dim=1)
-        if (allocated(table%vec(i)%key)) then
-          call table%vec(i)%get(table%vec(i)%key, out)
-          read(out, *) n
-          m = m + n
-          !write(*,*) i, table%vec(i)%key
+      do i = 1, d%dict_size
+        j = d%buckets(i)%current_idx
+        if (j > 0) then
+          do k = 1, j
+            out = d%buckets(i)%entries(k)%value
+            read(out, *) n
+            m = m + n
+          end do
         end if
       end do
       write(*,*) m
@@ -143,10 +151,10 @@ program main
      end subroutine mask_data
 
 
-   subroutine memory_decode(mask, mem, val, table)
+   subroutine memory_decode(mask, mem, val, d)
      implicit none
      character(len=charlen), intent(in)     :: mask
-     type(hash_tbl_sll), intent(inout)        :: table
+     type(dictionary_t), intent(inout)        :: d
      integer(kind=16), intent(inout) :: mem, val
      integer(kind = 16) :: e
      character(len=charlen)         :: bin_repr
@@ -167,7 +175,7 @@ program main
        end if
      end do
 
-     call unfloat(bin_repr, table, val)
+     call unfloat(bin_repr, d, val)
 
      end subroutine memory_decode
 
@@ -178,7 +186,7 @@ program main
      integer(kind=16), intent(in) :: val
      character(len=:), allocatable :: out
 
-     type(hash_tbl_sll), intent(inout)        :: addresses
+     type(dictionary_t), intent(inout)        :: addresses
      integer :: i, j, k
      integer(kind=16) :: e, m
      
@@ -200,8 +208,7 @@ program main
        end do
        write(tval, '(I20)') val
        write(key, '(I20)') m
-       !write(*,*) m
-       call addresses%put(key = key, val = tval)
+       call addresses%set(key, tval)
      else
        b0 = bin_repr
        b1 = bin_repr
