@@ -57,6 +57,10 @@ CONTAINS
        IF (list%key /= key) THEN
           IF ( .NOT. ASSOCIATED(list%child) ) ALLOCATE(list%child)
           CALL put_sll(list%child,key,val)
+       ELSE
+          IF (ALLOCATED(list%val)) DEALLOCATE(list%val)
+          ALLOCATE(CHARACTER(len=vallen) :: list%val)
+          list%val = val
        END IF
     ELSE
        IF (.NOT. ALLOCATED(list%key)) &
