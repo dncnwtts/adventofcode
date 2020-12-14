@@ -122,13 +122,17 @@ CONTAINS
   ELEMENTAL FUNCTION sum_string(str) RESULT(sig)
     CHARACTER(len=*), INTENT(in)   :: str
     INTEGER                        :: sig
-    CHARACTER, DIMENSION(LEN(str)) :: tmp
+    INTEGER, DIMENSION(LEN(str)) :: tmp
     INTEGER :: i
 
-    FORALL (i=1:LEN(str))
-       tmp(i) = str(i:i)
-    END FORALL
-    sig = SUM(ICHAR(tmp))
+    DO i=1,LEN(str)
+       IF (i == 1) THEN
+         tmp(i) = 31*ICHAR(str(i:i))
+       ELSE
+         tmp(i) = 31*ICHAR(str(i:i)) + tmp(i-1)
+       END IF
+    END DO
+    sig = SUM(tmp)
   END FUNCTION sum_string
 
 
