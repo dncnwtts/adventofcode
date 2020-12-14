@@ -1,16 +1,14 @@
 program main
-   use hashtbl
    use dictionary_m
    implicit none
    integer, parameter        :: tbl_length = 10000000, charlen=36
-   integer                   :: i, j, k, status, ioerror
+   integer(kind=16)                   :: i, j, k, status, ioerror
    integer(kind=16)                   :: nvals=0, m, n, maxmem=0, mem
    character(len=:), allocatable :: out
-   character(len=charlen)         :: msg, key
-   character(len=charlen)         :: bin_repr, mask
+   character(len=charlen)         :: msg
+   character(len=charlen)         :: mask
    character(len=10)         :: err_string
    character(len=80), allocatable, dimension(:) :: a
-   character(len=80) :: line, dir
    integer(kind=16), allocatable, dimension(:) :: addresses
 
 
@@ -18,10 +16,6 @@ program main
 
    call d%init(tbl_length)
 
-   !type(hash_tbl_sll)        :: table
-
-
-   !call table%init(tbl_length)
 
 
    open (unit = 9, file = 'data/input14.txt', status = 'OLD', action = 'READ', &
@@ -93,7 +87,6 @@ program main
       end do
 
       ! Get sum of all allocated elements
-      write(*,*) 'Getting sum'
       m = 0
       do i = 1, d%dict_size
         j = d%buckets(i)%current_idx
@@ -122,7 +115,7 @@ program main
      integer(kind = 16) :: e
      character(len=charlen)         :: bin_repr
 
-     integer :: i, j
+     integer :: i
 
      write(bin_repr, fmt='(B36)') m
 
@@ -145,9 +138,6 @@ program main
        end if
      end do
 
-
-
-
      end subroutine mask_data
 
 
@@ -156,10 +146,9 @@ program main
      character(len=charlen), intent(in)     :: mask
      type(dictionary_t), intent(inout)        :: d
      integer(kind=16), intent(inout) :: mem, val
-     integer(kind = 16) :: e
      character(len=charlen)         :: bin_repr
 
-     integer :: i, j
+     integer :: i
 
      write(bin_repr, fmt='(B36)') mem
 
@@ -184,10 +173,9 @@ program main
      character(len=charlen), intent(in)   :: bin_repr
      character(len=charlen)  :: b0, b1, tval, key
      integer(kind=16), intent(in) :: val
-     character(len=:), allocatable :: out
 
      type(dictionary_t), intent(inout)        :: addresses
-     integer :: i, j, k
+     integer(kind=16) :: i
      integer(kind=16) :: e, m
      
      i = index(bin_repr, 'X')
