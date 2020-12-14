@@ -131,9 +131,9 @@ CONTAINS
 
     DO i=1,LEN(str)
        IF (i == 1) THEN
-         tmp(i) = 31*ICHAR(str(i:i))
+         tmp(i) = 31*ICHAR(str(i:i))**2
        ELSE
-         tmp(i) = 31*ICHAR(str(i:i)) + tmp(i-1)
+         tmp(i) = 31*ICHAR(str(i:i))**2 + tmp(i-1)
        END IF
     END DO
     sig = SUM(tmp)

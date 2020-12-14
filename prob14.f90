@@ -93,10 +93,11 @@ program main
         if (allocated(table%vec(i)%key)) then
           call table%vec(i)%get(table%vec(i)%key, out)
           read(out, *) n
-          m = m + 1
+          m = m + n
+          !write(*,*) i, table%vec(i)%key
         end if
       end do
-      write(*,*) m, ubound(table%vec, dim=1) - lbound(table%vec, dim=1)
+      write(*,*) m
 
 
       if (allocated(a)) deallocate(a)
@@ -198,6 +199,8 @@ program main
          end if
        end do
        write(tval, '(I20)') val
+       write(key, '(I20)') m
+       !write(*,*) m
        call addresses%put(key = key, val = tval)
      else
        b0 = bin_repr
