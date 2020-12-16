@@ -1,26 +1,17 @@
 program main
-   !use dictionary_m
    implicit none
    integer, parameter        :: tbl_length = 10000000, charlen=36
    integer(kind=16)                   :: i, j, k, j1, k1, j2, k2, status, ioerror
-   integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, m, n, err_rate
+   integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, err_rate
    integer(kind=16)                   :: csv, newind=0, prod
-   character(len=:), allocatable :: out
    character(len=charlen)         :: msg
    character(len=10)         :: err_string
    character(len=80), allocatable, dimension(:) :: a, b, c
-   character(len=80)                            :: line1, line2, line3, line4
+   character(len=80)                            :: line1, line2 
    logical                   :: ok
    integer(kind=16), allocatable, dimension(:) :: mins, maxs, ordering, ticket, x
-   logical, allocatable, dimension(:,:) :: mask, mask_perm
-   integer(kind=16), allocatable, dimension(:,:) :: positions, trans_mat
-
-
-   !type(dictionary_t) :: d
-
-   !call d%init(tbl_length)
-
-
+   logical, allocatable, dimension(:,:) :: mask
+   integer(kind=16), allocatable, dimension(:,:) :: positions
 
 
    open (unit = 8, file = 'data/input16_rules.txt', status = 'OLD', action = 'READ', &
@@ -161,7 +152,7 @@ program main
           pos2: do k = 2, size(mins), 2
             if ((csv .ge. mins(k-1) .and. csv .le. maxs(k-1)) .or. &
               & (csv .ge. mins(k) .and. csv .le. maxs(k))) then 
-              positions(k/2,tval) = positions(k/2, tval) + 1
+              positions(k/2, tval) = positions(k/2, tval) + 1
             end if
           end do pos2
           if (j == 0) exit
@@ -170,12 +161,12 @@ program main
 
 
       do i = 1, nvals1
-        !write(*,fmt='(100I2)') positions(i,:)/newind
-        !if (minval(positions(i,:)) == 0) then
-          !write(*,*) c(i)
-        !end if
+        ! write(*,fmt='(100I2)') positions(i,:)/newind
+        ! if (minval(positions(i,:)) == 0) then
+          ! write(*,*) c(i)
+        ! end if
         positions(i,:) =  positions(i,:)/newind
-        !write(*,fmt='(100I2)') positions(i,:)
+        ! write(*,fmt='(100I2)') positions(i,:)
       end do
 
       allocate (mask(nvals1, nvals1))
@@ -184,20 +175,19 @@ program main
       allocate (x(nvals1))
 
 
-      ticket = [89,179,173,167,157,127,163,113,137,109,151,131,97,149,107,83,79,139,59,53]
+      ticket = [89, 179, 173, 167, 157, 127, 163, 113, 137, 109, 151, 131, 97, 149, 107, 83, 79, 139, 59, 53]
       mask = .true.
-      !mask_perm = .false.
 
       prod = 1
       do i = 1, nvals1
         x = sum(positions, 1, mask)
         j =  minloc(x, 1, mask(1,:))
-        k =  maxloc(positions(:,j), 1, mask(:,j))
+        k =  maxloc(positions(:, j), 1, mask(:, j))
         positions(k,:) = 0
         if (k < 7) then
           prod = prod*ticket(j)
         end if
-        mask(:,j) = .false.
+        mask(:, j) = .false.
       end do
 
       write(*,*) prod
