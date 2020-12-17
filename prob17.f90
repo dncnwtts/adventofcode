@@ -1,7 +1,7 @@
 program main
    implicit none
    integer, parameter        :: charlen=36
-   integer                   :: i, j, x,y,z,w, status, ioerror
+   integer                   :: i, j, x, y, z, w, status, ioerror
    integer                   :: nvals=0
    character(len=charlen)         :: msg
    character(len=10)         :: err_string
@@ -35,10 +35,10 @@ program main
       do y = -nvals/2, nvals/2
         j = y + nvals/2+1
         line1 =  a(j)
-        do x=-nvals/2, nvals/2
+        do x = -nvals/2, nvals/2
           i = x + nvals/2+1
           if (line1(i:i) == '#') then
-            pocket(x,y,0) = .true.
+            pocket(x, y, 0) = .true.
           end if
         end do
       end do
@@ -51,14 +51,14 @@ program main
         do x = -25, 25
         do y = -25, 25
         do z = -25, 25
-          nvals = check_cube(x,y,z,pocket_buff)
-          if (pocket_buff(x,y,z)) then
+          nvals = check_cube(x, y, z, pocket_buff)
+          if (pocket_buff(x, y, z)) then
             if (nvals .ne. 2 .and. nvals .ne. 3) then
-              pocket(x,y,z) = .false.
+              pocket(x, y, z) = .false.
             end if
           else
             if (nvals == 3) then
-              pocket(x,y,z) = .true.
+              pocket(x, y, z) = .true.
             end if
           end if
         end do
@@ -73,14 +73,14 @@ program main
       do z = -26, 26
         do y = -26, 26
         do x = -26, 26
-        if (pocket(x,y,z)) nvals = nvals + 1
+        if (pocket(x, y, z)) nvals = nvals + 1
         end do
         end do
       end do
       write(*,*) nvals
 
 
-      pocket4d(:,:,:,0) = pocket_orig
+      pocket4d(:,:,:, 0) = pocket_orig
 
       pocket_buff4d = pocket4d
 
@@ -91,14 +91,14 @@ program main
         do y = -25, 25
         do z = -25, 25
         do w = -25, 25
-          nvals = check_cube4d(x,y,z,w,pocket_buff4d)
-          if (pocket_buff4d(x,y,z,w)) then
+          nvals = check_cube4d(x, y, z, w, pocket_buff4d)
+          if (pocket_buff4d(x, y, z, w)) then
             if (nvals .ne. 2 .and. nvals .ne. 3) then
-              pocket4d(x,y,z,w) = .false.
+              pocket4d(x, y, z, w) = .false.
             end if
           else
             if (nvals == 3) then
-              pocket4d(x,y,z,w) = .true.
+              pocket4d(x, y, z, w) = .true.
             end if
           end if
         end do
@@ -115,7 +115,7 @@ program main
       do z = -26, 26
       do y = -26, 26
       do x = -26, 26
-        if (pocket4d(x,y,z,w)) nvals = nvals + 1
+        if (pocket4d(x, y, z, w)) nvals = nvals + 1
       end do
       end do
       end do
@@ -130,7 +130,7 @@ program main
 
    contains
 
-     integer function check_cube(x,y,z,pocket)
+     integer function check_cube(x, y, z, pocket)
              implicit none
              integer, intent(in) :: x, y, z
              logical, intent(in), dimension(-26:26,-26:26,-26:26) :: pocket
@@ -139,10 +139,10 @@ program main
 
              check_cube = 0
 
-             do xi=x-1, x+1
-             do yi=y-1, y+1
-             do zi=z-1,z+1
-                if ((abs(xi-x) + abs(yi-y) + abs(zi-z) .ne. 0) .and. (pocket(xi,yi,zi))) then
+             do xi = x-1, x+1
+             do yi = y-1, y+1
+             do zi = z-1, z+1
+                if ((abs(xi-x) + abs(yi-y) + abs(zi-z) .ne. 0) .and. (pocket(xi, yi, zi))) then
                    check_cube = check_cube + 1
                 end if
              end do
@@ -153,7 +153,7 @@ program main
              end function check_cube
 
 
-     integer function check_cube4d(x,y,z,w,pocket)
+     integer function check_cube4d(x, y, z, w, pocket)
              implicit none
              integer, intent(in) :: x, y, z, w
              logical, intent(in), dimension(-26:26,-26:26,-26:26,-26:26) :: pocket
@@ -162,11 +162,11 @@ program main
 
              check_cube4d = 0
 
-             do xi=x-1, x+1
-             do yi=y-1, y+1
-             do zi=z-1,z+1
-             do wi=w-1, w+1
-                if ((abs(xi-x) + abs(yi-y) + abs(zi-z) +abs(wi-w) .ne. 0) .and. (pocket(xi,yi,zi,wi))) then
+             do xi = x-1, x+1
+             do yi = y-1, y+1
+             do zi = z-1, z+1
+             do wi = w-1, w+1
+                if ((abs(xi-x) + abs(yi-y) + abs(zi-z) +abs(wi-w) .ne. 0) .and. (pocket(xi, yi, zi, wi))) then
                    check_cube4d = check_cube4d + 1
                 end if
              end do
