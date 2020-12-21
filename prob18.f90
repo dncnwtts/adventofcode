@@ -9,7 +9,7 @@ program main
    integer(kind=16)            :: vals, val
 
 
-   open (unit = 9, file = 'data/input18_dummy.txt', status = 'OLD', action = 'READ', &
+   open (unit = 9, file = 'data/input18.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
 
    fileopen: if (ioerror == 0) then
@@ -68,11 +68,22 @@ program main
        eval_result = 0
 
        do i=1, len(trim(line))
+         !write(*,*) line(i:i)
          if (line(i:i)==' ') then
            cycle
+         else if (line(i:i)=='+') then
+           cycle
+         else if (line(i:i)=='*') then
+           cycle  
          else if (line(i:i)=='(') then
-           line2 = line(i+1:)
+           !write(*,*) 'Started loop'
+           !write(*,*) line(i:)
+           line2 = ' '
+           line2(i+1:) = line(i+1:)
            a = eval(line2)
+           !write(*,*) 'At higher level'
+           !write(*,*) line2
+           !write(*,*) line2(i:i)
 
            i1 = index(line(:i), '+',  back)
            j1 = index(line(:i), '*',  back)
@@ -85,15 +96,12 @@ program main
            else if (j1 > i1) then
              eval_result = eval_result * a
            else
-             !write(*,*) "Shouldn't be here1"
+             write(*,*) "Shouldn't be here1"
              cycle
            end if
          else if (line(i:i)==')') then
+           write(*,*) line(:i), 'Finished loop'
            exit
-         else if (line(i:i)=='+') then
-           cycle
-         else if (line(i:i)=='*') then
-           cycle  
          else
 
            i1 = index(line(:i), '+',  back)
@@ -108,15 +116,14 @@ program main
            else if (j1 > i1) then
              eval_result = eval_result * a
            else if (line(i-2:i-2) == ' ') then
-             !write(*,*) 'blank line...', line
+             write(*,*) 'blank line...', line
            else 
-             !write(*,*) "Shouldn't be here2", line(i-2:i-2)
+             write(*,*) "Shouldn't be here2", line(i-2:i-2)
            end if
          end if
 
        end do
 
-       !write(*,*) trim(line_orig)
        !write(*,*) 'Finished parentheses loop'
        !write(*,*) trim(line(:i)), eval_result
 
