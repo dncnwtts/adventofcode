@@ -1,15 +1,15 @@
 program main
    implicit none
-   integer, parameter        :: charlen=200
-   integer                   :: i, j, x, y, z, w, status, ioerror, nvals=0
+   integer(kind=16), parameter        :: charlen=250
+   integer(kind=16)                   :: i, j, x, y, z, w, status, ioerror, nvals=0
    character(len=charlen)         :: msg
    character(len=10)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a
    character(len=80)                            :: line1
-   integer            :: vals
+   integer(kind=16)            :: vals, val
 
 
-   open (unit = 9, file = 'data/input18.txt', status = 'OLD', action = 'READ', &
+   open (unit = 9, file = 'data/input18_dummy.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
 
    fileopen: if (ioerror == 0) then
@@ -31,10 +31,16 @@ program main
 
       vals = 0
 
-      do i = 1, 6
-        vals = vals + eval(a(i))
+      do i = 1, nvals
+        write(*,*) trim(a(i))
+        val = eval(a(i))
+        write(*,*) val
+        vals = vals + val
         !write(*,*) vals
+        write(*,*)
       end do
+
+      write(*,*) vals
 
 
 
@@ -48,103 +54,76 @@ program main
      recursive function eval(line) result(eval_result)
        implicit none
        character(len=charlen), intent(inout)  :: line
-       character(len=charlen)  :: line2
-       integer            :: i, j, a, b, i1, i2, j1, j2, lparen_ind=0, rparen_ind
-       integer  :: eval_result, num_parens = 0
-       integer, allocatable, dimension(:) :: lparens, rparens
+       character(len=charlen)  :: line2, line_orig
+       integer(kind=16)            :: i, j, a, b, i1, i2, j1, j2, lparen_ind=0, rparen_ind
+       integer(kind=16)  :: eval_result, num_parens = 0
+       integer(kind=16), allocatable, dimension(:) :: lparens, rparens
+
+       logical :: back=.true.
 
 
        line2 = line
-       do
-         i1 = index(line2, '(')
-         write(*,*) i1
-         if (i1 == 0) exit
-         num_parens = num_parens + 1
-         line2(:i1+1) = ' '
-         write(*,*) trim(line2)
-       end do
-       write(*,*) 'num_parens: ', num_parens
-
-       if (num_parens > 0) then
-         allocate(lparens(num_parens))
-         allocate(rparens(num_parens))
-         line2 = line
-         do i = 1, num_parens
-           lparens(i) = index(line2, '(')
-           line2(:i+1) = ' '
-         end do
-         line2 = line
-         do i = 1, num_parens
-           rparens(i) = index(line2, ')')
-           line2(:i+1) = ' '
-         end do
-
-         write(*,*) lparens
-         write(*,*) rparens
-       end if
+       line_orig = line
 
        eval_result = 0
 
-       !write(*,*) 'input line: ', trim(line)
-
-       rparen_ind = index(line, ')')
-       lparen_ind = 0
-
        do i=1, len(trim(line))
-         !write(*,*) line(i:i), lparen_ind, rparen_ind, i
-         if (i < lparen_ind .and. lparen_ind > 0) then
-           cycle
-         else if (line(i:i)==' ') then
+         if (line(i:i)==' ') then
            cycle
          else if (line(i:i)=='(') then
-           line2 = line(i+1:rparen_ind-1)
+           line2 = line(i+1:)
            a = eval(line2)
-           !rparen_ind = index(line(rparen_ind+1:), ')') + rparen_ind  + 1
-           !lparen_ind = index(line(lparen_ind+1:), '(') + lparen_ind  + 1
 
-           line(:rparen_ind) = ' '
-
+           i1 = index(line(:i), '+',  back)
+           j1 = index(line(:i), '*',  back)
+           line = line2
            
            if (eval_result == 0) then
              eval_result = a
-           else if (line(i-2:i-2) == '+') then
+           else if (i1 > j1) then
              eval_result = eval_result + a
-           else if (line(i-2:i-2) == '*') then
+           else if (j1 > i1) then
              eval_result = eval_result * a
-           else if (line(i-2:i-2) == ' ') then
-             exit
            else
-             write(*,*) "Shouldn't be here1", line(i-3:i-3)
+             !write(*,*) "Shouldn't be here1"
+             cycle
            end if
          else if (line(i:i)==')') then
-           !line(i+1:) = line(i+1:)
-           !write(*,*) 'ending paren'
            exit
          else if (line(i:i)=='+') then
            cycle
          else if (line(i:i)=='*') then
            cycle  
          else
+
+           i1 = index(line(:i), '+',  back)
+           j1 = index(line(:i), '*',  back)
+
+
            read(line(i:i), *) a
            if (eval_result == 0) then
              eval_result = a
-           else if (line(i-2:i-2) == '+') then
+           else if (i1 > j1) then
              eval_result = eval_result + a
-           else if (line(i-2:i-2) == '*') then
+           else if (j1 > i1) then
              eval_result = eval_result * a
            else if (line(i-2:i-2) == ' ') then
-             write(*,*) 'blank line...', line
-             !exit
+             !write(*,*) 'blank line...', line
            else 
-             write(*,*) "Shouldn't be here2", line(i-2:i-2)
+             !write(*,*) "Shouldn't be here2", line(i-2:i-2)
            end if
          end if
 
-         !write(*,*) i, line(i:i), ' ', trim(line), len(trim(line))
-
        end do
 
-       write(*,*) trim(line), ' = ',eval_result
+       !write(*,*) trim(line_orig)
+       !write(*,*) 'Finished parentheses loop'
+       !write(*,*) trim(line(:i)), eval_result
+
+       line(:i) = ' '
+
+       !write(*,*)
+
 
 
        end function eval
