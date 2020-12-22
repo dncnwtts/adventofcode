@@ -69,14 +69,14 @@ program main
 
        eval_result = 0
 
-       do i=1, len(trim(line))
-         if (line(i:i)==' ') then
+       do i = 1, len(trim(line))
+         if (line(i:i) ==' ') then
            cycle
-         else if (line(i:i)=='+') then
+         else if (line(i:i) =='+') then
            cycle
-         else if (line(i:i)=='*') then
+         else if (line(i:i) =='*') then
            cycle  
-         else if (line(i:i)=='(') then
+         else if (line(i:i) =='(') then
            line2 = ' '
            line2(i+1:) = line(i+1:)
            a = eval(line2)
@@ -94,7 +94,7 @@ program main
            else
              cycle
            end if
-         else if (line(i:i)==')') then
+         else if (line(i:i) ==')') then
            exit
          else
 
@@ -137,23 +137,23 @@ program main
        mult = 1
        acc = 0
 
-       do i=1, len(trim(line))
-         if (line(i:i)==' ') then
+       do i = 1, len(trim(line))
+         if (line(i:i) ==' ') then
            cycle
-         else if (line(i:i)=='+') then
+         else if (line(i:i) =='+') then
            token = '+'
-         else if (line(i:i)=='*') then
+         else if (line(i:i) =='*') then
            token = '*'
            mult = acc
            acc = 0
-         else if (line(i:i)=='(') then
+         else if (line(i:i) =='(') then
            line2 = ' '
            line2(i+1:) = line(i+1:)
            a = eval2(line2)
 
            line = line2
            acc = acc + a*mult
-         else if (line(i:i)==')') then
+         else if (line(i:i) ==')') then
            exit
          else
            token = line(i:i)
