@@ -1,11 +1,11 @@
 program main
    implicit none
    integer(kind=16), parameter        :: charlen=250
-   integer(kind=16)                   :: i, j, x, y, z, w, status, ioerror, nvals=0
+   integer(kind=16)                   :: i, status, ioerror, nvals=0
    character(len=charlen)         :: msg
    character(len=10)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a
-   character(len=80)                            :: line1
+   character(len=charlen)                            :: line1
    integer(kind=16)            :: vals, val
 
 
@@ -30,18 +30,22 @@ program main
 
 
       vals = 0
-
       do i = 1, nvals
-        write(*,*) trim(a(i))
-        val = eval(a(i))
-        write(*,*) val
+        line1 = a(i)
+        val = eval(line1)
         vals = vals + val
-        !write(*,*) vals
-        write(*,*)
       end do
 
       write(*,*) vals
 
+      vals = 0
+      do i = 1, nvals
+        line1 = a(i)
+        val = eval2(line1)
+        vals = vals + val
+      end do
+
+      write(*,*) vals
 
 
       if (allocated(a)) deallocate(a)
@@ -54,21 +58,18 @@ program main
      recursive function eval(line) result(eval_result)
        implicit none
        character(len=charlen), intent(inout)  :: line
-       character(len=charlen)  :: line2, line_orig
-       integer(kind=16)            :: i, j, a, b, i1, i2, j1, j2, lparen_ind=0, rparen_ind
-       integer(kind=16)  :: eval_result, num_parens = 0
-       integer(kind=16), allocatable, dimension(:) :: lparens, rparens
+       character(len=charlen)  :: line2
+       integer(kind=16)            :: i, a, i1, j1
+       integer(kind=16)  :: eval_result
 
        logical :: back=.true.
 
 
        line2 = line
-       line_orig = line
 
        eval_result = 0
 
        do i=1, len(trim(line))
-         !write(*,*) line(i:i)
          if (line(i:i)==' ') then
            cycle
          else if (line(i:i)=='+') then
@@ -76,14 +77,9 @@ program main
          else if (line(i:i)=='*') then
            cycle  
          else if (line(i:i)=='(') then
-           !write(*,*) 'Started loop'
-           !write(*,*) line(i:)
            line2 = ' '
            line2(i+1:) = line(i+1:)
            a = eval(line2)
-           !write(*,*) 'At higher level'
-           !write(*,*) line2
-           !write(*,*) line2(i:i)
 
            i1 = index(line(:i), '+',  back)
            j1 = index(line(:i), '*',  back)
@@ -96,11 +92,9 @@ program main
            else if (j1 > i1) then
              eval_result = eval_result * a
            else
-             write(*,*) "Shouldn't be here1"
              cycle
            end if
          else if (line(i:i)==')') then
-           write(*,*) line(:i), 'Finished loop'
            exit
          else
 
@@ -124,15 +118,55 @@ program main
 
        end do
 
-       !write(*,*) 'Finished parentheses loop'
-       !write(*,*) trim(line(:i)), eval_result
+       line(:i) = ' '
+
+       end function eval
+
+
+     recursive function eval2(line) result(acc)
+       ! Implementing https://github.com/mebeim/aoc/blob/master/2020/README.md#day-18---operation-order
+       implicit none
+       character(len=charlen), intent(inout)  :: line
+       character(len=charlen)  :: line2
+       character :: token
+       integer(kind=16)            :: i, a 
+       integer(kind=16)  :: mult, acc
+
+       line2 = line
+
+       mult = 1
+       acc = 0
+
+       do i=1, len(trim(line))
+         if (line(i:i)==' ') then
+           cycle
+         else if (line(i:i)=='+') then
+           token = '+'
+         else if (line(i:i)=='*') then
+           token = '*'
+           mult = acc
+           acc = 0
+         else if (line(i:i)=='(') then
+           line2 = ' '
+           line2(i+1:) = line(i+1:)
+           a = eval2(line2)
+
+           line = line2
+           acc = acc + a*mult
+         else if (line(i:i)==')') then
+           exit
+         else
+           token = line(i:i)
+           read(line(i:i), *) a
+           acc = acc + a * mult
+         end if
+
+       end do
 
        line(:i) = ' '
 
-       !write(*,*)
+       end function eval2
 
 
-
-       end function eval
 
 end program main
