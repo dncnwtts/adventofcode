@@ -128,11 +128,8 @@ program main
        implicit none
        character(len=charlen), intent(inout)  :: line
        character(len=charlen)  :: line2
-       character :: token
        integer(kind=16)            :: i, a 
        integer(kind=16)  :: mult, acc
-
-       line2 = line
 
        mult = 1
        acc = 0
@@ -141,9 +138,8 @@ program main
          if (line(i:i) ==' ') then
            cycle
          else if (line(i:i) =='+') then
-           token = '+'
+           cycle
          else if (line(i:i) =='*') then
-           token = '*'
            mult = acc
            acc = 0
          else if (line(i:i) =='(') then
@@ -156,7 +152,6 @@ program main
          else if (line(i:i) ==')') then
            exit
          else
-           token = line(i:i)
            read(line(i:i), *) a
            acc = acc + a * mult
          end if
