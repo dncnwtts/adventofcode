@@ -1,8 +1,8 @@
 program main
    implicit none
-   integer, parameter        :: charlen=80
-   integer(kind=16)          :: i, j, k, x, y, z, status, ioerror
-   integer(kind=16)          :: nvals=0
+   integer, parameter        :: charlen=80, lim=70
+   integer(kind=16)          :: i, j, k, x, y, z, day, status, ioerror
+   integer(kind=16)          :: nvals=0, num=0
    integer(kind=16)          :: csv, newind=0, prod
    character(len=charlen)    :: msg
    character(len=10)         :: err_string
@@ -11,7 +11,7 @@ program main
    logical                   :: ok
    integer(kind=16), allocatable, dimension(:) :: mins, maxs, ordering, ticket
    logical, allocatable, dimension(:,:) :: mask
-   integer(kind=16), allocatable, dimension(:,:,:) :: positions
+   integer(kind=16), allocatable, dimension(:,:,:) :: positions, positions_buff
 
    open (unit = 9, file = 'data/input24.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
@@ -32,7 +32,8 @@ program main
          read(9, '(A)', iostat = status) a(i)
       end do
 
-      allocate(positions(-100:100, -100:100, -100:100))
+      allocate(positions(-lim:lim, -lim:lim, -lim:lim))
+      allocate(positions_buff(-lim:lim, -lim:lim, -lim:lim))
       positions = 0
 
 
@@ -86,6 +87,41 @@ program main
       end do
 
       write(*,*) sum(positions)
+
+
+      bigloop: do day = 1, 100
+
+        positions_buff = positions
+
+        do i = -lim+1, lim-1
+          do j = -lim+1, lim-1
+            do k = -lim+1, lim-1
+              num = 0
+              num = num + positions(i+1,j+1,k)
+              num = num + positions(i-1,j-1,k)
+              num = num + positions(i,j+1,k+1)
+              num = num + positions(i,j-1,k-1)
+              num = num + positions(i+1,j,k-1)
+              num = num + positions(i-1,j,k+1)
+              if (num == 0 .or. num > 2 .and. positions(i,j,k) == 1) then
+                positions_buff(i,j,k) = 0
+              else if (num == 2 .and. positions(i,j,k) == 0) then
+                positions_buff(i,j,k) = 1
+              end if
+              if ((abs(k) == lim-1.or.abs(i)==lim-1.or.abs(j)==lim-1) .and. positions(i,j,k) == 1) then
+                write(*,*) 'at the edge'
+                exit bigloop
+              end if
+            end do
+          end do
+        end do
+        positions = positions_buff
+        if (day < 10 .or. mod(day,10) == 0) then
+          write(*,*) day, sum(positions)
+        end if
+      end do bigloop
+
+
 
 
    else fileopen
