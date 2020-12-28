@@ -60,7 +60,7 @@ program main
            msg = a(i)
            line = trim(msg)
            do k = 1, 10
-             tiles(ntiles,j,k) = line(k:k)
+             tiles(ntiles, j, k) = line(k:k)
            end do
          end if
       end do
@@ -73,13 +73,13 @@ program main
 
       ! Need to just choose the right orientation
       tiles(1,:,:) =        tiles(1,:,:)
-      !tiles(1,:,:) =  rot90(tiles(1,:,:))
-      !tiles(1,:,:) = rot180(tiles(1,:,:))
-      !tiles(1,:,:) = rot270(tiles(1,:,:))
-      !tiles(1,:,:) = flip_ver(       tiles(1,:,:))
-      !tiles(1,:,:) = flip_ver( rot90(tiles(1,:,:)))
-      !tiles(1,:,:) = flip_ver(rot180(tiles(1,:,:)))
-      !tiles(1,:,:) = flip_ver(rot270(tiles(1,:,:)))
+      ! tiles(1,:,:) =  rot90(tiles(1,:,:))
+      ! tiles(1,:,:) = rot180(tiles(1,:,:))
+      ! tiles(1,:,:) = rot270(tiles(1,:,:))
+      ! tiles(1,:,:) = flip_ver(       tiles(1,:,:))
+      ! tiles(1,:,:) = flip_ver( rot90(tiles(1,:,:)))
+      ! tiles(1,:,:) = flip_ver(rot180(tiles(1,:,:)))
+      ! tiles(1,:,:) = flip_ver(rot270(tiles(1,:,:)))
 
       do k = 1, ntiles
         do l = 1, ntiles
@@ -158,7 +158,7 @@ program main
       do i = 1, ntiles
         j = (i-1)/int(ntiles**0.5)+1
         k = mod(i-1, int(ntiles**0.5)) + 1
-        picture((j-1)*10+2:j*10-1, (k-1)*10+2:k*10-1) = tiles(i,2:9,2:9)
+        picture((j-1)*10+2:j*10-1, (k-1)*10+2:k*10-1) = tiles(i, 2:9, 2:9)
       end do
 
       l = 0
@@ -168,7 +168,7 @@ program main
         do j = 1, int(ntiles**0.5)*10
           if (picture(i,j) == ' ') cycle
           k = k + 1
-          picture_buff(l, k) = picture(i,j)
+          picture_buff(l, k) = picture(i, j)
         end do
         if (k == 0)  l = l - 1
       end do
@@ -195,7 +195,7 @@ program main
       do i = 1, nvals
         do j = 1, len(trim(b(i)))
           line = b(i)
-          monster(i,j) = line(j:j)
+          monster(i, j) = line(j:j)
         end do
       end do
 
@@ -204,10 +204,10 @@ program main
       call flipfind(monster, picture)
 
       
-      !do i = 1, int(ntiles**0.5)*10
-      !  if (len(adjustr(picture(i,:)))==0) cycle
+      ! do i = 1, int(ntiles**0.5)*10
+      !  if (len(adjustr(picture(i,:))) == 0) cycle
       !  write(*,*) adjustr(picture(i,:))
-      !end do
+      ! end do
 
       write(*,*) count_rough(picture)
 
@@ -356,13 +356,13 @@ program main
        if (all(tile1(1, :) == tile2(s(1), :))) then
          i = 0
          j = -1
-       else if (all(tile1(:, 1) == tile2(:,s(1)))) then
+       else if (all(tile1(:, 1) == tile2(:, s(1)))) then
          i = -1
          j = 0
        else if (all(tile1(s(1),:) == tile2(1, :))) then
          i = 0
          j = 1
-       else if (all(tile1(:,s(1)) == tile2(:,1))) then
+       else if (all(tile1(:, s(1)) == tile2(:, 1))) then
          i = 1
          j = 0
        end if
@@ -451,7 +451,7 @@ program main
        s = shape(tile)
        allocate(tile2(s(1), s(2)))
 
-       tile2(:,:) = tile(:,s(1):1:-1)
+       tile2(:,:) = tile(:, s(1):1:-1)
 
      end function
 
