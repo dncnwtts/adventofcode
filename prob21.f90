@@ -5,7 +5,7 @@ program main
    integer(kind=16)                   :: i, j, k, j1, k1, j2, k2, status, ioerror
    integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, num=0
    integer(kind=16)                   :: csv, newind=0, prod
-   character(len=charlen)         :: msg, key, val
+   character(len=charlen)         :: msg, key, val, inter1, inter2
    character(len=10)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a, b, c
    character(len=charlen)                            :: line1, line2 
@@ -61,14 +61,45 @@ program main
         end do
       end do
 
-      call intersect(b(1), b(2), msg)
-      write(*,*) b(1)
-      write(*,*) b(2)
-      write(*,*) msg
-      call intersect(c(1), c(2), msg)
-      write(*,*) c(1)
-      write(*,*) c(2)
-      write(*,*) msg
+
+      ! To find an allergen, take the intersection of two sets. If there is a one-to-one
+      ! allergence-ingredient list, then remove that from all others. You are not modifying
+      ! the ingredient / allergen list unless you found the one-to-one.
+
+      ! We'll implement what I did in LaTeX so I can do it pedantically, then we
+      ! can do it more programatically.
+
+      call intersect(b(1), b(2), inter1)
+      call intersect(c(1), c(2), inter2)
+      write(*,*) inter1, inter2
+      ! Need to find a way to count how many ingredients/allergens.
+      ! Also need a function to remove the allergens/ingredients.
+      ! Assert that we know there is one allergen/ingredient.
+
+      do i = 1, nvals1
+        write(*,*) trim(adjustl(b(i)))
+        write(*,*) trim(adjustl(c(i)))
+        j = index(b(i), trim(inter1))
+        if (j > 0) then
+          msg = b(i)
+          msg(j:len(trim(inter1))) = ' '
+          b(i) = msg
+        end if
+        j = index(c(i), trim(inter2))
+        if (j > 0) then
+          msg = c(i)
+          msg(j:len(trim(inter2))) = ' '
+          c(i) = msg
+        end if
+        write(*,*) trim(adjustl(b(i)))
+        write(*,*) trim(adjustl(c(i)))
+        write(*,*)
+      end do
+
+      ! Needs some work, but then we need to look for other allergen lists
+      ! that have items in common. Rinse, lather, repeat. Always repeat.
+
+
 
 
 
