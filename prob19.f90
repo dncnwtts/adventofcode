@@ -67,8 +67,9 @@ program main
       end do
 
       num = 0
+      key = "0"
       do i = 1, nvals2
-        if (is_valid(b(i), d)) num = num+1
+        if (is_valid(b(i), d, key)) num = num+1
       end do
       write(*,*) num
       ! should be 2
@@ -80,14 +81,23 @@ program main
 
    contains
 
-     recursive function is_valid(m, d) result(val)
+     recursive function is_valid(m, d, key) result(res)
        use dictionary_m
        implicit none
        type(dictionary_t),     intent(in) :: d
        character(len=charlen), intent(in)  :: m
-       logical :: val
+       character(len=charlen), intent(in)  :: key
+       logical :: res
 
-       val = .false.
+       integer :: i
+
+       res = .false.
+       ! My thoughts on how to do this...
+
+       ! Loop through the characters in the message, e.g., aab
+
+       ! My thought for the algorithm is... evaluate the key, always choose the first element.
+       ! If the first element doesn't match, then it's a failure, go up a level, look for a bar, try next el after the bar.
 
 
        end function is_valid
