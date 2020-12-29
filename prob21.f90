@@ -1,11 +1,11 @@
 program main
-   use dictionary_m
+   use lexsort
    implicit none
-   integer, parameter        :: tbl_length = 10000000, charlen=1000
+   integer, parameter        :: tbl_length = 10000000, charlen=2000
    integer(kind=16)                   :: i, j, k, l, status, ioerror
    integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, num=0
    integer(kind=16)                   :: csv, newind=0, prod
-   character(len=charlen)         :: msg, key, val, inter1, inter2
+   character(len=charlen)         :: msg, key, val, inter1, inter2, inter3, inter4
    character(len=10)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a, b, c
    character(len=charlen)                            :: line1, line2 
@@ -13,10 +13,6 @@ program main
    integer(kind=16), allocatable, dimension(:) :: mins, maxs, ordering, ticket, x
    logical, allocatable, dimension(:,:) :: mask
    integer(kind=16), allocatable, dimension(:,:) :: positions
-
-   type(dictionary_t) :: d
-
-   call d%init(tbl_length)
 
 
    open (unit = 9, file = 'data/input21.txt', status = 'OLD', action = 'READ', &
@@ -37,18 +33,13 @@ program main
           write(*,*) status
       end if
 
-      ! initialize dictionary
       do i = 1, nvals1
          read(9, '(A)', iostat = status) a(i)
          j = index(a(i), '(')
          k = index(a(i), ')')
          line1 = a(i)
          write(key, *) line1(:j-1)
-         !j = index(a(i), 'contains ')
          write(val, *) line1(j+9:k-1)
-         !key = trim(adjustl(key))
-         !val = trim(adjustl(val))
-         !call d%set(key, val)
          b(i) = key
          c(i) = val
       end do
@@ -62,68 +53,46 @@ program main
       end do
 
 
-      ! To find an allergen, take the intersection of two sets. If there is a one-to-one
-      ! allergence-ingredient list, then remove that from all others. You are not modifying
-      ! the ingredient / allergen list unless you found the one-to-one.
+      do
+        allergen: do i = 1, nvals1-1
+          inter1 = b(i)
+          inter2 = c(i)
+          do j = i+1, nvals1
+            call intersect(inter1, b(j), inter3)
+            call intersect(inter2, c(j), inter4)
 
-      ! We'll implement what I did in LaTeX so I can do it pedantically, then we
-      ! can do it more programatically.
-      do i = 1, nvals1
-        write(*,*) trim(adjustl(b(i))), '   ', trim(adjustl(c(i)))
-      end do
-
-      do i = 1, nvals1-1
-        do j = i+1, nvals1
-          call intersect(b(i), b(j), inter1)
-          call intersect(c(i), c(j), inter2)
-
-          if (count_strings(inter1) == 1 .and. count_strings(inter2) == 1) then
-            do k = 1, nvals1
-              l = index(b(k), trim(adjustl(inter1)))
-              if (l > 0) then
-                msg = b(k)
-                msg(l:l+len(trim(adjustl(inter1)))) = ' '
-                b(k) = msg
-              end if
-              l = index(c(k), trim(adjustl(inter2)))
-              if (l > 0) then
-                msg = c(k)
-                msg(l:l+len(trim(adjustl(inter2)))) = ' '
-                c(k) = msg
-              end if
-            end do
-          end if
-        end do
-      end do
-
-      do i = 1, nvals1
-        if (count_strings(c(i)) == 1) then
-          do j = 1, nvals1
-            call intersect(b(i), b(j), inter1)
-            call intersect(c(i), c(j), inter2)
-            l = index(b(j), trim(adjustl(inter1)))
-            if (l > 0) then
-              msg = b(j)
-              msg(l:l+len(trim(adjustl(inter1)))) = ' '
-              b(j) = msg
+            if (count_strings(inter3) > 0 .and. count_strings(inter4)>0) then
+              inter1 = inter3
+              inter2 = inter4
             end if
-            l = index(c(j), trim(adjustl(inter2)))
-            if (l > 0) then
-              msg = c(j)
-              msg(l:l+len(trim(adjustl(inter2)))) = ' '
-              c(j) = msg
+            if (count_strings(inter1) == 1 .and. count_strings(inter2) == 1) then
+              write(*,*) trim(adjustl(inter1)), ' ', trim(adjustl(inter2))
+              do k = 1, nvals1
+                msg = b(k)
+                l = index(msg, trim(adjustl(inter1)))
+                if (l > 0) then
+                  msg(l:l+len(trim(adjustl(inter1)))) = ' '
+                  b(k) = msg
+                end if
+
+                msg = c(k)
+                l = index(msg, trim(adjustl(inter2)))
+                if (l > 0) then
+                  msg(l:l+len(trim(adjustl(inter2)))) = ' '
+                  c(k) = msg
+                end if
+              end do
+              exit allergen
             end if
           end do
-        end if
-      end do
+        end do allergen
 
-      write(*,*)
-      do i = 1, nvals1
-        if (count_strings(b(i)) > 0) then
-          write(*,*) trim(adjustl(b(i))), '   ', trim(adjustl(c(i)))
-        end if
+        num = 0
+        do i = 1, nvals1
+          num = num + count_strings(c(i))
+        end do
+        if (num == 0) exit
       end do
-      write(*,*)
 
       num = 0
       do i = 1, nvals1
@@ -133,6 +102,10 @@ program main
       write(*,*) num
 
 
+      ! Part 2 is to identify which allergen is which, and asks for an alphabetized comma-separated list,
+      ! where the actual values are alphabetized by the English value. Sounds tricky in Fortran!
+
+      ! Step 1, let's see if we can identify which allergen is which.
 
 
 
