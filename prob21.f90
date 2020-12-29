@@ -1,19 +1,25 @@
 program main
-   use lexsort
+   use LexicalSort
    implicit none
    integer, parameter        :: tbl_length = 10000000, charlen=2000
-   integer(kind=16)                   :: i, j, k, l, status, ioerror
-   integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, num=0
-   integer(kind=16)                   :: csv, newind=0, prod
+   integer                            :: i, j, k, l, n, status, ioerror
+   integer                            :: nvals1=0, nvals2=0, tval=0, num=0
+   integer                            :: csv, newind=0, prod
    character(len=charlen)         :: msg, key, val, inter1, inter2, inter3, inter4
    character(len=10)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a, b, c
    character(len=charlen)                            :: line1, line2 
    logical                   :: ok
-   integer(kind=16), allocatable, dimension(:) :: mins, maxs, ordering, ticket, x
+   integer,          allocatable, dimension(:) :: mins, maxs, ordering, ticket, x
    logical, allocatable, dimension(:,:) :: mask
-   integer(kind=16), allocatable, dimension(:,:) :: positions
+   integer,          allocatable, dimension(:,:) :: positions
 
+   character(len=charlen) :: dang_ingrs
+
+   integer, parameter :: maxn = 10000, llen=60
+   character(len=llen) :: lines_alls(maxn), lines_ingrs(maxn)
+   integer :: idx(maxn)
+   integer :: nlin
 
    open (unit = 9, file = 'data/input21.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
@@ -53,6 +59,8 @@ program main
       end do
 
 
+      n = 1
+
       do
         allergen: do i = 1, nvals1-1
           inter1 = b(i)
@@ -67,6 +75,9 @@ program main
             end if
             if (count_strings(inter1) == 1 .and. count_strings(inter2) == 1) then
               write(*,*) trim(adjustl(inter1)), ' ', trim(adjustl(inter2))
+              lines_ingrs(n) = trim(adjustl(inter1))
+              lines_alls(n) = trim(adjustl(inter2))
+              n = n + 1
               do k = 1, nvals1
                 msg = b(k)
                 l = index(msg, trim(adjustl(inter1)))
@@ -102,10 +113,23 @@ program main
       write(*,*) num
 
 
-      ! Part 2 is to identify which allergen is which, and asks for an alphabetized comma-separated list,
-      ! where the actual values are alphabetized by the English value. Sounds tricky in Fortran!
+      !call sort(lines_alls(1:num), idx)
 
-      ! Step 1, let's see if we can identify which allergen is which.
+      !j = 1
+      !dang_ingrs = ''
+      !do i = 1, num
+      !  if (len(trim(adjustl(lines_ingrs(idx(i))))) .ne. llen) then
+      !    dang_ingrs(j:j+len(trim(adjustl(lines_ingrs(idx(i)))))) = trim(adjustl(lines_ingrs(idx(i))))
+      !    j = j + len(trim(adjustl(lines_ingrs(idx(i)))))
+      !    if (i < num) then
+      !      dang_ingrs(j:j) = ','
+      !      j = j + 1
+      !    end if
+      !  end if
+      !end do
+      !write(*,*) trim(adjustl(dang_ingrs))
+
+
 
 
 
