@@ -1,25 +1,19 @@
 program main
    use LexicalSort
    implicit none
-   integer, parameter        :: tbl_length = 10000000, charlen=2000
+   integer, parameter                 :: charlen=2000
    integer                            :: i, j, k, l, n, status, ioerror
-   integer                            :: nvals1=0, nvals2=0, tval=0, num=0
-   integer                            :: csv, newind=0, prod
+   integer                            :: nvals=0, num=0
    character(len=charlen)         :: msg, key, val, inter1, inter2, inter3, inter4
    character(len=10)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a, b, c
-   character(len=charlen)                            :: line1, line2 
-   logical                   :: ok
-   integer,          allocatable, dimension(:) :: mins, maxs, ordering, ticket, x
-   logical, allocatable, dimension(:,:) :: mask
-   integer,          allocatable, dimension(:,:) :: positions
+   character(len=charlen)                            :: line1
 
    character(len=charlen) :: dang_ingrs
 
    integer, parameter :: maxn = 10000, llen=60
    character(len=llen) :: lines_alls(maxn), lines_ingrs(maxn)
    integer :: idx(maxn)
-   integer :: nlin
 
    open (unit = 9, file = 'data/input21.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
@@ -28,18 +22,18 @@ program main
       do
          read(9, '(A)', iostat = status) msg
          if (status /= 0) exit
-         nvals1 = nvals1 + 1
+         nvals = nvals + 1
       end do
-      allocate( a(nvals1), stat = status)
-      allocate( b(nvals1), stat = status)
-      allocate( c(nvals1), stat = status)
+      allocate( a(nvals), stat = status)
+      allocate( b(nvals), stat = status)
+      allocate( c(nvals), stat = status)
       if (status == 0) then
           rewind( unit = 9)
       else
           write(*,*) status
       end if
 
-      do i = 1, nvals1
+      do i = 1, nvals
          read(9, '(A)', iostat = status) a(i)
          j = index(a(i), '(')
          k = index(a(i), ')')
@@ -50,7 +44,7 @@ program main
          c(i) = val
       end do
 
-      do i = 1, nvals1
+      do i = 1, nvals
         do j = 1, len(c(i))
           msg = c(i)
           if (msg(j:j) == ',') msg(j:j) = ' '
@@ -62,14 +56,14 @@ program main
       n = 1
 
       do
-        allergen: do i = 1, nvals1-1
+        allergen: do i = 1, nvals-1
           inter1 = b(i)
           inter2 = c(i)
-          do j = i+1, nvals1
+          do j = i+1, nvals
             call intersect(inter1, b(j), inter3)
             call intersect(inter2, c(j), inter4)
 
-            if (count_strings(inter3) > 0 .and. count_strings(inter4)>0) then
+            if (count_strings(inter3) > 0 .and. count_strings(inter4) > 0) then
               inter1 = inter3
               inter2 = inter4
             end if
@@ -77,7 +71,7 @@ program main
               lines_ingrs(n) = trim(adjustl(inter1))
               lines_alls(n) = trim(adjustl(inter2))
               n = n + 1
-              do k = 1, nvals1
+              do k = 1, nvals
                 msg = b(k)
                 l = index(msg, trim(adjustl(inter1)))
                 if (l > 0) then
@@ -98,14 +92,14 @@ program main
         end do allergen
 
         num = 0
-        do i = 1, nvals1
+        do i = 1, nvals
           num = num + count_strings(c(i))
         end do
         if (num == 0) exit
       end do
 
       num = 0
-      do i = 1, nvals1
+      do i = 1, nvals
         num = num + count_strings(b(i))
       end do
 
@@ -129,10 +123,6 @@ program main
       write(*,*) trim(adjustl(dang_ingrs))
 
 
-
-
-
-
    else fileopen
       write(*,*) 'File I/O Error'
    end if fileopen
@@ -145,7 +135,7 @@ program main
        character(len=charlen), intent(out) :: c
 
 
-       integer :: i, j, k, l
+       integer :: i, j, k
 
 
        c = a
@@ -168,7 +158,7 @@ program main
        character(len=charlen), intent(in)  :: a
 
        integer :: num
-       integer :: i, j, k
+       integer :: i
 
 
        ! loop over string
