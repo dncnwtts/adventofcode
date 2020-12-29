@@ -1,8 +1,8 @@
 program main
    use dictionary_m
    implicit none
-   integer, parameter        :: tbl_length = 10000000, charlen=200
-   integer(kind=16)                   :: i, j, k, j1, k1, j2, k2, status, ioerror
+   integer, parameter        :: tbl_length = 10000000, charlen=1000
+   integer(kind=16)                   :: i, j, k, l, status, ioerror
    integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, num=0
    integer(kind=16)                   :: csv, newind=0, prod
    character(len=charlen)         :: msg, key, val, inter1, inter2
@@ -68,36 +68,70 @@ program main
 
       ! We'll implement what I did in LaTeX so I can do it pedantically, then we
       ! can do it more programatically.
-
-      call intersect(b(1), b(2), inter1)
-      call intersect(c(1), c(2), inter2)
-      write(*,*) inter1, inter2
-      ! Need to find a way to count how many ingredients/allergens.
-      ! Also need a function to remove the allergens/ingredients.
-      ! Assert that we know there is one allergen/ingredient.
-
       do i = 1, nvals1
-        write(*,*) trim(adjustl(b(i)))
-        write(*,*) trim(adjustl(c(i)))
-        j = index(b(i), trim(inter1))
-        if (j > 0) then
-          msg = b(i)
-          msg(j:len(trim(inter1))) = ' '
-          b(i) = msg
-        end if
-        j = index(c(i), trim(inter2))
-        if (j > 0) then
-          msg = c(i)
-          msg(j:len(trim(inter2))) = ' '
-          c(i) = msg
-        end if
-        write(*,*) trim(adjustl(b(i)))
-        write(*,*) trim(adjustl(c(i)))
-        write(*,*)
+        write(*,*) trim(adjustl(b(i))), '   ', trim(adjustl(c(i)))
       end do
 
-      ! Needs some work, but then we need to look for other allergen lists
-      ! that have items in common. Rinse, lather, repeat. Always repeat.
+      do i = 1, nvals1-1
+        do j = i+1, nvals1
+          call intersect(b(i), b(j), inter1)
+          call intersect(c(i), c(j), inter2)
+
+          if (count_strings(inter1) == 1 .and. count_strings(inter2) == 1) then
+            do k = 1, nvals1
+              l = index(b(k), trim(adjustl(inter1)))
+              if (l > 0) then
+                msg = b(k)
+                msg(l:l+len(trim(adjustl(inter1)))) = ' '
+                b(k) = msg
+              end if
+              l = index(c(k), trim(adjustl(inter2)))
+              if (l > 0) then
+                msg = c(k)
+                msg(l:l+len(trim(adjustl(inter2)))) = ' '
+                c(k) = msg
+              end if
+            end do
+          end if
+        end do
+      end do
+
+      do i = 1, nvals1
+        if (count_strings(c(i)) == 1) then
+          do j = 1, nvals1
+            call intersect(b(i), b(j), inter1)
+            call intersect(c(i), c(j), inter2)
+            l = index(b(j), trim(adjustl(inter1)))
+            if (l > 0) then
+              msg = b(j)
+              msg(l:l+len(trim(adjustl(inter1)))) = ' '
+              b(j) = msg
+            end if
+            l = index(c(j), trim(adjustl(inter2)))
+            if (l > 0) then
+              msg = c(j)
+              msg(l:l+len(trim(adjustl(inter2)))) = ' '
+              c(j) = msg
+            end if
+          end do
+        end if
+      end do
+
+      write(*,*)
+      do i = 1, nvals1
+        if (count_strings(b(i)) > 0) then
+          write(*,*) trim(adjustl(b(i))), '   ', trim(adjustl(c(i)))
+        end if
+      end do
+      write(*,*)
+
+      num = 0
+      do i = 1, nvals1
+        num = num + count_strings(b(i))
+      end do
+
+      write(*,*) num
+
 
 
 
@@ -129,6 +163,33 @@ program main
        end do
 
 
+
        end subroutine intersect
+
+
+    function count_strings(a) result(num)
+      implicit none
+       character(len=charlen), intent(in)  :: a
+
+       integer :: num
+       integer :: i, j, k
+
+
+       ! loop over string
+       ! if you find a character, search for the next space
+       i = 1
+       num = 0
+       do
+         if (a(i:i) == ' ') then
+           i = i + 1
+         else
+           i = index(a(i:), ' ') + i
+           num = num + 1
+         end if
+         if (i == len(a)) exit
+       end do
+
+
+      end function count_strings
 
 end program main
