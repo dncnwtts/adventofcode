@@ -74,7 +74,6 @@ program main
               inter2 = inter4
             end if
             if (count_strings(inter1) == 1 .and. count_strings(inter2) == 1) then
-              write(*,*) trim(adjustl(inter1)), ' ', trim(adjustl(inter2))
               lines_ingrs(n) = trim(adjustl(inter1))
               lines_alls(n) = trim(adjustl(inter2))
               n = n + 1
@@ -113,21 +112,21 @@ program main
       write(*,*) num
 
 
-      !call sort(lines_alls(1:num), idx)
+      call sort(lines_alls(1:num), idx)
 
-      !j = 1
-      !dang_ingrs = ''
-      !do i = 1, num
-      !  if (len(trim(adjustl(lines_ingrs(idx(i))))) .ne. llen) then
-      !    dang_ingrs(j:j+len(trim(adjustl(lines_ingrs(idx(i)))))) = trim(adjustl(lines_ingrs(idx(i))))
-      !    j = j + len(trim(adjustl(lines_ingrs(idx(i)))))
-      !    if (i < num) then
-      !      dang_ingrs(j:j) = ','
-      !      j = j + 1
-      !    end if
-      !  end if
-      !end do
-      !write(*,*) trim(adjustl(dang_ingrs))
+      j = 1
+      dang_ingrs = ''
+      do i = 1, num
+        if (len(trim(adjustl(lines_ingrs(idx(i))))) .ne. llen) then
+          dang_ingrs(j:j+len(trim(adjustl(lines_ingrs(idx(i)))))) = trim(adjustl(lines_ingrs(idx(i))))
+          j = j + len(trim(adjustl(lines_ingrs(idx(i)))))
+          if (i < num) then
+            dang_ingrs(j:j) = ','
+            j = j + 1
+          end if
+        end if
+      end do
+      write(*,*) trim(adjustl(dang_ingrs))
 
 
 
