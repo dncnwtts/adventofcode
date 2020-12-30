@@ -57,52 +57,7 @@ program main
          end if
       end do
 
-      do
-        r = r + 1
-        write(*,*) 'Round', r
-        write(*,'(20I3)') deck1
-        write(*,'(20I3)') deck2
-        if (deck1(1) > deck2(1)) then
-          write(*,*)  'player 1 wins'
-          deck_buff = deck1
-          do i = 1, minloc(deck_buff,1)
-            deck_buff(i) = deck1(i+1)
-          end do
-          deck_buff(i-2) = deck1(1)
-          deck_buff(i-1) = deck2(1)
-          deck1 = deck_buff
-          
-          deck_buff = deck2
-          do i = 1, minloc(deck_buff, 1)
-            deck_buff(i) = deck2(i+1)
-          end do
-          deck_buff(i+1) = 0
-          deck2 = deck_buff
-        else
-          write(*,*) 'player 2 wins'
-          deck_buff = deck2
-          do i = 1, minloc(deck_buff,1)
-            deck_buff(i) = deck2(i+1)
-          end do
-          deck_buff(i-2) = deck2(1)
-          deck_buff(i-1) = deck1(1)
-          deck2 = deck_buff
-          
-          deck_buff = deck1
-          do i = 1, minloc(deck_buff, 1)
-            deck_buff(i) = deck1(i+1)
-          end do
-          deck_buff(i+1) = 0
-          deck1 = deck_buff
-        end if
-
-        write(*,*)
-        if (maxval(deck1) == 0 .or. maxval(deck2) == 0) exit
-      end do
-
-      if (maxval(deck1) == 0) deck_buff = deck2
-      if (maxval(deck2) == 0) deck_buff = deck1
-      write(*, '(20I3)') deck_buff
+      call combat(deck1, deck2, deck_buff)
 
       sol = 0
       n = 1
@@ -119,6 +74,55 @@ program main
    else fileopen
       write(*,*) 'File I/O Error'
    end if fileopen
+
+
+   contains
+
+     subroutine combat(deck1, deck2, deck_buff)
+       implicit none
+       integer, dimension(:), intent(Inout) :: deck1, deck2, deck_buff
+       do
+         if (deck1(1) > deck2(1)) then
+           deck_buff = deck1
+           do i = 1, minloc(deck_buff,1)
+             deck_buff(i) = deck1(i+1)
+           end do
+           deck_buff(i-2) = deck1(1)
+           deck_buff(i-1) = deck2(1)
+           deck1 = deck_buff
+           
+           deck_buff = deck2
+           do i = 1, minloc(deck_buff, 1)
+             deck_buff(i) = deck2(i+1)
+           end do
+           deck_buff(i+1) = 0
+           deck2 = deck_buff
+         else
+           deck_buff = deck2
+           do i = 1, minloc(deck_buff,1)
+             deck_buff(i) = deck2(i+1)
+           end do
+           deck_buff(i-2) = deck2(1)
+           deck_buff(i-1) = deck1(1)
+           deck2 = deck_buff
+           
+           deck_buff = deck1
+           do i = 1, minloc(deck_buff, 1)
+             deck_buff(i) = deck1(i+1)
+           end do
+           deck_buff(i+1) = 0
+           deck1 = deck_buff
+         end if
+
+         if (maxval(deck1) == 0) then
+           deck_buff = deck2
+           exit
+         else if (maxval(deck2) == 0) then
+           deck_buff = deck1
+           exit
+         end if
+       end do
+       end subroutine combat
 
 
 end program main
