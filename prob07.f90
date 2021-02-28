@@ -19,6 +19,8 @@ program main
    open (unit = 9, file = 'data/input7.txt', status = 'OLD', action = 'READ', &
            iostat = ioerror, iomsg = err_string)
 
+   status = 0
+
    fileopen: if (status == 0) then
       do
          read(9, '(A)', iostat = status) msg
