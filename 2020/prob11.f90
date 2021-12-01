@@ -1,4 +1,4 @@
-program main
+program prob11
   implicit none
   integer                   :: i, j, t, status, ioerror, nvals=0, ans=0, leng
   character(len=88)         :: msg
@@ -228,4 +228,4 @@ program main
     write(*,*) 'file not opening'
   end if fileopen
 
-end program main
+end program prob11

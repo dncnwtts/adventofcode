@@ -1,6 +1,6 @@
-program main
+program prob20
    implicit none
-   integer, parameter        :: charlen=80, lim=70
+   integer, parameter        :: charlen=80
    integer                   :: i, j, k, i1, j1, l, m, status, ioerror
    integer                   :: nvals=0, ntiles=0
    integer(kind=16)          :: prod
@@ -542,4 +542,4 @@ program main
        end do main
      end subroutine tilecheck
 
-end program main
+end program prob20

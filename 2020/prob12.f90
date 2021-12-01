@@ -1,6 +1,6 @@
-program main
+program prob12
    implicit none
-   integer                   :: i, status, ioerror
+   integer                   :: i, status=0, ioerror
    integer                   :: nvals=0
    real(8), parameter        :: pi = atan(1d0)*4
    real(8)                   ::  x, y, val, ang
@@ -122,4 +122,4 @@ program main
 
 
 
-end program main
+end program prob12

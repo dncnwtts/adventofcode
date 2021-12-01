@@ -1,5 +1,5 @@
-program main
-   integer                   :: i, j, status
+program prob02
+   integer                   :: i, j, status=0
    character(len=40)         :: msg, err_string
 
 
@@ -49,4 +49,4 @@ program main
 
    write(*,*) valid
 
-end program main
+end program prob02

@@ -1,6 +1,6 @@
-program main
+program prob16
    implicit none
-   integer, parameter        :: tbl_length = 10000000, charlen=36
+   integer, parameter        :: charlen=36
    integer(kind=16)                   :: i, j, k, j1, k1, j2, k2, status, ioerror
    integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, err_rate
    integer(kind=16)                   :: csv, newind=0, prod
@@ -203,4 +203,4 @@ program main
       write(*,*) 'oops'
    end if fileopen
 
-end program main
+end program prob16

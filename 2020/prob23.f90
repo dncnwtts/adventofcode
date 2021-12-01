@@ -1,4 +1,4 @@
-program main
+program prob23
   implicit none
   integer(kind=16), dimension(9) :: cups, cups_buff
   integer(kind=16), dimension(3) :: move
@@ -36,17 +36,17 @@ program main
     cups_buff(1) = cups(1)
     cups_buff(2:6) = cups(5:9)
 
-    destination = mod(current - 1 + 9 -1, 9) + 1
+    destination = mod(current - 1_16 + 9_16 - 1_16, 9_16) + 1_16
     ! if destination is in the moved cups, subtract until it isn't
     do
-      destination_ind = 0
-      do j = 1, 3
+      destination_ind = 0_16
+      do j = 1_16, 3_16
         if (move(j) == destination) then
           destination_ind = j
         end if
       end do
-      if (destination_ind .ne. 0) then
-        destination = mod(destination - 1 + 9 - 1, 9) + 1
+      if (destination_ind .ne. 0_16) then
+        destination = mod(destination - 1_16 + 9_16 - 1_16, 9_16) + 1_16
       else
         exit
       end if
@@ -82,8 +82,8 @@ program main
     end if
   end do
   cups_buff = cups
-  do i = 1, 9
-    cups(i) = cups_buff(mod(j+i-1, 9)+1)
+  do i = 1_16, 9_16
+    cups(i) = cups_buff(mod(j+i-1_16, 9_16)+1_16)
   end do
   write(*,'(8I1)') cups(1:8)
 
@@ -107,7 +107,7 @@ program main
 
   links = 0
   do i = 1, 1000000
-    links(cups2(i)) = cups2(mod(i+1-1, 1000000) + 1)
+    links(cups2(i)) = cups2(mod(i+1_16-1_16, 1000000_16) + 1_16)
   end do
 
 
@@ -119,7 +119,7 @@ program main
     cup3 = links(cup2)
     nxt  = links(cup3)
 
-    destination = mod(current - 1 + 1000000 - 1, 1000000) + 1
+    destination = mod(current - 1_16 + 1000000_16 - 1_16, 1000000_16) + 1_16
 
     do
       if (cup1 .ne. destination .and. cup2 .ne. destination .and. cup3 .ne. destination &
@@ -142,4 +142,4 @@ program main
 
   write(*,*) links(1)*links(links(1))
 
-  end program main
+  end program prob23

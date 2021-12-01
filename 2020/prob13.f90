@@ -1,10 +1,10 @@
-program main
+program prob13
    implicit none
    integer(kind=16)                    :: t0, n, m, i, j, k
    integer(kind=16)                    :: ans, c1, c2
    integer(kind=16)                    :: a1, a2, m1, m2, n1, n2, x
    integer                            :: nvals=0, status, ioerror
-   real :: n_nonzero = 0, test
+   integer(kind=16) :: test
    integer(kind=16), allocatable, dimension(:) :: a, b
    character(len=200)         :: msg
    character(len=200)         :: err_string
@@ -165,4 +165,4 @@ program main
 
        end subroutine extended_gcd
 
-end program main
+end program prob13

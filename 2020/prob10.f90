@@ -1,7 +1,7 @@
-program main
+program prob10
    use sorts
    implicit none
-   integer                   :: i, status, ioerror
+   integer                   :: i, status=0, ioerror
    integer                   :: nvals=0, jumps1=0, jumps3=0, n=0, m=0
    character(len=88)         :: msg
    character(len=10)         :: err_string
@@ -71,4 +71,4 @@ program main
       write(*,*) 'file not opening'
    end if fileopen
 
-end program main
+end program prob10

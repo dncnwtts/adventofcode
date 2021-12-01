@@ -1,4 +1,4 @@
-program main
+program prob15
    use dictionary_m
    implicit none
    integer, parameter        :: tbl_length = 10000000, charlen=36
@@ -92,4 +92,4 @@ program main
 
    write(*,*) trim(say)
 
-end program main
+end program prob15

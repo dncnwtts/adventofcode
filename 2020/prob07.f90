@@ -1,4 +1,4 @@
-program main
+program prob07
    use hashtbl
    implicit none
    integer, parameter        :: tbl_length = 1000, charlen=120
@@ -8,7 +8,6 @@ program main
    character(len=charlen)         :: err_string
    character(len=charlen), allocatable, dimension(:) :: a
    character(len=charlen), allocatable, dimension(:) :: containers
-   character(len=:), allocatable :: out
    
    type(hash_tbl_sll)        :: table
 
@@ -173,4 +172,4 @@ contains
 
     end subroutine num_in_table
 
-end program main
+end program prob07

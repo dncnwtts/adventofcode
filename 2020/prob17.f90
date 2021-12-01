@@ -1,4 +1,4 @@
-program main
+program prob17
    implicit none
    integer, parameter        :: charlen=36
    integer                   :: i, j, x, y, z, w, status, ioerror
@@ -177,4 +177,4 @@ program main
              return
              end function check_cube4d
 
-end program main
+end program prob17

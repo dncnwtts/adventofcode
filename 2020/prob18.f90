@@ -1,4 +1,4 @@
-program main
+program prob18
    implicit none
    integer(kind=16), parameter        :: charlen=250
    integer(kind=16)                   :: i, status, ioerror, nvals=0
@@ -164,4 +164,4 @@ program main
 
 
 
-end program main
+end program prob18

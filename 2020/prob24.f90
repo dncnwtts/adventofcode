@@ -1,16 +1,12 @@
-program main
+program prob24
    implicit none
-   integer, parameter        :: charlen=80, lim=70
-   integer(kind=16)          :: i, j, k, x, y, z, day, status, ioerror
-   integer(kind=16)          :: nvals=0, num=0
-   integer(kind=16)          :: csv, newind=0, prod
+   integer, parameter        :: charlen=80
+   integer(kind=16)          :: i, j, k, x, y, z, day, status=0, ioerror
+   integer(kind=16)          :: nvals=0, num=0, lim=70
    character(len=charlen)    :: msg
    character(len=10)         :: err_string
-   character(len=80), allocatable, dimension(:) :: a, b, c
+   character(len=80), allocatable, dimension(:) :: a
    character(len=charlen)    :: line
-   logical                   :: ok
-   integer(kind=16), allocatable, dimension(:) :: mins, maxs, ordering, ticket
-   logical, allocatable, dimension(:,:) :: mask
    integer(kind=16), allocatable, dimension(:,:,:) :: positions, positions_buff
 
    open (unit = 9, file = 'data/input24.txt', status = 'OLD', action = 'READ', &
@@ -116,7 +112,7 @@ program main
           end do
         end do
         positions = positions_buff
-        if (day < 10 .or. mod(day,10) == 0) then
+        if (day < 10 .or. mod(day,10_16) == 0) then
           write(*,*) day, sum(positions)
         end if
       end do bigloop
@@ -129,4 +125,4 @@ program main
    end if fileopen
 
 
-end program main
+end program prob24

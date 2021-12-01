@@ -1,6 +1,6 @@
-program main
+program prob09
    implicit none
-   integer                   :: i, j, k, l, buff, status, ioerror, answer1
+   integer                   :: i, j, k, l, buff, status=0, ioerror, answer1
    integer                   :: nvals=0
    character(len=88)         :: msg
    character(len=10)         :: err_string
@@ -62,4 +62,4 @@ program main
       write(*,*) 'file not opening'
    end if fileopen
 
-end program main
+end program prob09

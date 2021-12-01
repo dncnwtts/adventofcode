@@ -1,4 +1,4 @@
-program main
+program prob21
    use LexicalSort
    implicit none
    integer, parameter                 :: charlen=2000
@@ -178,4 +178,4 @@ program main
 
       end function count_strings
 
-end program main
+end program prob21

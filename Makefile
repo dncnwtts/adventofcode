@@ -62,6 +62,7 @@ ans25: prob25.o $(OBJ)
 
 
 all: ans01 ans02 ans03 ans04 ans05 ans06 ans07 ans08 ans09 ans10 ans11 ans12 ans13 ans15 ans16 ans17 ans18 ans19 ans20 ans21 ans22 ans23 ans24 ans25
+
 .PHONY: clean
 clean:
 	rm -f *.mod *.o ans?? *.out

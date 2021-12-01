@@ -1,7 +1,7 @@
-program main
+program prob22
    use dictionary_m
    implicit none
-   integer, parameter        :: charlen=80, lim=70, longcharlen=10000000, tbl_length=1000
+   integer, parameter        :: charlen=80, tbl_length=1000
    integer                   :: i, j, k, l, sol, status, ioerror
    integer                   :: nvals=0
    character(len=charlen)    :: msg
@@ -314,4 +314,4 @@ program main
       end do
       end function
 
-end program main
+end program prob22

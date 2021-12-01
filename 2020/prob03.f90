@@ -1,4 +1,4 @@
-program main
+program prob03
    implicit none
    integer                   :: num=0
    character(len=31)         :: msg
@@ -27,7 +27,7 @@ contains
    subroutine get_hits(right, down, num)
         integer, intent(in)  :: right, down
         integer, intent(out) :: num
-        integer              :: i, j, status
+        integer              :: i, j, status=0
         character(len=1)     :: c
 
         num = 0
@@ -54,4 +54,4 @@ contains
    end subroutine get_hits
 
 
-end program main
+end program prob03

@@ -1,18 +1,13 @@
-program main
+program prob19
    use dictionary_m
    implicit none
    integer, parameter        :: tbl_length = 10000000, charlen=80
-   integer(kind=16)                   :: i, j, k, j1, k1, j2, k2, status, ioerror
-   integer(kind=16)                   :: nvals1=0, nvals2=0, tval=0, num=0
-   integer(kind=16)                   :: csv, newind=0, prod
+   integer(kind=16)                   :: i, j, status=0, ioerror
+   integer(kind=16)                   :: nvals1=0, nvals2=0, num=0
    character(len=charlen)         :: msg, key, val
    character(len=10)         :: err_string
-   character(len=80), allocatable, dimension(:) :: a, b, c
-   character(len=charlen)                            :: line1, line2 
-   logical                   :: ok
-   integer(kind=16), allocatable, dimension(:) :: mins, maxs, ordering, ticket, x
-   logical, allocatable, dimension(:,:) :: mask
-   integer(kind=16), allocatable, dimension(:,:) :: positions
+   character(len=80), allocatable, dimension(:) :: a, b
+   character(len=charlen)                            :: line1
 
    type(dictionary_t) :: d
 
@@ -68,9 +63,6 @@ program main
 
       num = 0
       key = "0"
-      do i = 1, nvals2
-        if (is_valid(b(i), d, key)) num = num+1
-      end do
       write(*,*) num
       ! should be 2
 
@@ -81,26 +73,6 @@ program main
 
    contains
 
-     recursive function is_valid(m, d, key) result(res)
-       use dictionary_m
-       implicit none
-       type(dictionary_t),     intent(in) :: d
-       character(len=charlen), intent(in)  :: m
-       character(len=charlen), intent(in)  :: key
-       logical :: res
-
-       integer :: i
-
-       res = .false.
-       ! My thoughts on how to do this...
-
-       ! Loop through the characters in the message, e.g., aab
-
-       ! My thought for the algorithm is... evaluate the key, always choose the first element.
-       ! If the first element doesn't match, then it's a failure, go up a level, look for a bar, try next el after the bar.
-
-
-       end function is_valid
 
      recursive subroutine traverse(d, key, val)
        use dictionary_m
@@ -155,4 +127,4 @@ program main
        end subroutine traverse
 
 
-end program main
+end program prob19

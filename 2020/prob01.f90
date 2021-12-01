@@ -1,6 +1,6 @@
-program main
+program prob01
    integer, dimension(1000) :: expenses=0
-   integer                  :: i, j, k, status, temp
+   integer                  :: i, j, k, status, temp, nvals=0
 
 
    open (unit = 9, file = 'data/input1.txt', status = 'OLD', action = 'READ', &
@@ -32,4 +32,4 @@ program main
       end do
    end do outer
 
-end program main
+end program prob01

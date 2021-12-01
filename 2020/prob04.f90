@@ -1,6 +1,6 @@
-program main
+program prob04
    implicit none
-   integer                   :: j, k, status, ioerror, n
+   integer                   :: j, k, status=0, ioerror, n
    character(len=200)         :: msg, err_string
 
 
@@ -108,4 +108,4 @@ program main
 
    write(*,*) n_valid
 
-end program main
+end program prob04

@@ -1,6 +1,6 @@
-program main
+program prob06
    implicit none
-   integer                   :: i, j, status, ioerror, n=0, m=0
+   integer                   :: i, j, status=0, ioerror, n=0, m=0
    character(len=26)         :: msg, alphabet
    integer, dimension(26)    :: forms
    character(len=10)         :: err_string
@@ -39,4 +39,4 @@ program main
 
 
 
-end program main
+end program prob06

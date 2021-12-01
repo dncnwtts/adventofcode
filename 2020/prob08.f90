@@ -1,6 +1,6 @@
-program main
+program prob08
    implicit none
-   integer                   :: i, j, k, l, status, ioerror
+   integer                   :: i, j, k, l, status=0, ioerror
    integer                   :: ind=1, nvals=0, acc=0
    character(len=88)         :: msg
    character(len=10)         :: err_string
@@ -117,4 +117,4 @@ program main
 
    if (allocated(a)) deallocate(a)
 
-end program main
+end program prob08

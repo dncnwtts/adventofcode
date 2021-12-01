@@ -129,12 +129,9 @@ CONTAINS
     INTEGER, DIMENSION(LEN(str)) :: tmp
     INTEGER :: i
 
-    DO i=1,LEN(str)
-       IF (i == 1) THEN
-         tmp(i) = 31*ICHAR(str(i:i))**2
-       ELSE
-         tmp(i) = 31*ICHAR(str(i:i))**2 + tmp(i-1)
-       END IF
+    tmp(1) = 31*ICHAR(str(1:1))**2
+    DO i=2,LEN(str)
+      tmp(i) = 31*ICHAR(str(i:i))**2 + tmp(i-1)
     END DO
     sig = SUM(tmp)
   END FUNCTION sum_string
