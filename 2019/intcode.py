@@ -1,8 +1,7 @@
 import numpy as np
 import time
 
-def Intcode_output(Intcode, input, parameter_mode=0):
-    i = 0
+def Intcode_output(Intcode, input, phase=None, i=0):
     while Intcode[i] != 99:
         opcode = Intcode[i] % 100
         C  = (Intcode[i] // 100) % 10
@@ -31,17 +30,22 @@ def Intcode_output(Intcode, input, parameter_mode=0):
         elif opcode == 2:
             Intcode[val3] = val1 * val2
         elif opcode == 3:
-            if C == 0:
-                Intcode[Intcode[i]] = input
+            if phase is not None:
+                inp = phase
+                phase = None
             else:
-                Intcode[i] = input
+                inp = input
+            if C == 0:
+                Intcode[Intcode[i]] = inp
+            else:
+                Intcode[i] = inp
             i += 1
         elif opcode == 4:
             if C == 0:
                 output = Intcode[Intcode[i]]
             else:
                 output = Intcode[i]
-            print(output)
+            return output, Intcode, i+1
             i += 1
         elif opcode == 5:
             if C == 0:
@@ -87,7 +91,7 @@ def Intcode_output(Intcode, input, parameter_mode=0):
                 Intcode[val3] = 1
             else:
                 Intcode[val3] = 0
-    return Intcode
+    return Intcode, Intcode, i
 
 
 if __name__ == '__main__':
@@ -120,6 +124,6 @@ if __name__ == '__main__':
     thing = [3,21,1008,21,8,20,1005,20,22,107,8,21,20,1006,20,31,
             1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
             999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99 ]
-    Intcode_output(thing, 7)
-    Intcode_output(thing, 8)
-    Intcode_output(thing, 9)
+    Intcode_output(thing, [7])
+    Intcode_output(thing, [8])
+    Intcode_output(thing, [9])

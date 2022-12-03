@@ -33,12 +33,12 @@ def count_orbits(odict, k):
         return n
 
 
-#orbit_list = np.loadtxt('input06.txt', dtype=str)
-#
-#orbit_dict = {}
-#for i in range(len(orbit_list)):
-#    A, B = orbit_list[i].split(')')
-#    orbit_dict[B] = A
+orbit_list = np.loadtxt('input06.txt', dtype=str)
+
+orbit_dict = {}
+for i in range(len(orbit_list)):
+    A, B = orbit_list[i].split(')')
+    orbit_dict[B] = A
 
 
 n_orbits = 0
@@ -47,5 +47,22 @@ for key in orbit_dict.keys():
 print(n_orbits)
 
 
-orbit_dict['YOU'] = 'K'
-orbit_dict['SAN'] = 'I'
+def return_orbits(odict, k):
+    A = odict[k]
+    if A in odict.keys():
+        orb_out = return_orbits(odict, A)
+        return orb_out + ',' + A
+    else:
+        return A
+
+orb_you = return_orbits(orbit_dict, 'YOU')
+orb_san = return_orbits(orbit_dict, 'SAN')
+
+orb_you = orb_you.split(',')
+orb_san = orb_san.split(',')
+
+
+for i in range(1,min(len(orb_you), len(orb_san))):
+    if orb_you[i] != orb_san[i]:
+        print(len(orb_you)-i + len(orb_san)-i)
+        break
