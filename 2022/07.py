@@ -34,14 +34,14 @@ def traverse_tree(tree):
 
 
 f = open('input07_ex.txt')
-f = open('input07_ex.txt')
+f = open('input07.txt')
 Lines = f.readlines()
 tree = FileSyst('/', True)
 base = tree
 for line in Lines:
     if '..' in line:
         tree = tree.parent
-    elif 'cd' in line:
+    elif ' cd ' in line:
         current_dir_name = line[line.index('cd')+2:].strip()
         for c in tree.children:
             if c.name == current_dir_name:
