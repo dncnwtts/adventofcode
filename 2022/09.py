@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 N = 1000
 
 data =    [ ['.' for i in range(N)] for j in range(N)]
@@ -60,7 +59,6 @@ for i, v in enumerate(visited):
         if vi == '#':
             inc += 1
             visit_map[i,j] = 1
-plt.spy(visit_map)
 print(inc)
 
 
@@ -121,6 +119,3 @@ for i, v in enumerate(visited):
             inc += 1
             visit_map[i,j] = 1
 print(inc)
-plt.figure()
-plt.spy(visit_map)
-plt.show()

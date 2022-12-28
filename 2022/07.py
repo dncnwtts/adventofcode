@@ -6,6 +6,10 @@ class FileSyst():
         self.parent = parent
         self.is_dir = is_dir
         self.size   = size
+        if parent is None:
+            self.level = 0
+        else:
+            self.level  = self.parent.level + 1
         if is_dir:
             self.children = []
         return
@@ -26,6 +30,11 @@ class FileSyst():
 def traverse_tree(tree):
     size = 0
     for c in tree.children:
+        #print('     '*c.level, c.name, c.size, c.is_dir)
+        if c.is_dir and c.size <= 100000:
+            print('*****'*c.level, c.name, c.size, c.is_dir)
+        else:
+            print('     '*c.level, c.name, c.size, c.is_dir)
         if c.is_dir:
             if c.size <= 100000:
                 size += c.size
@@ -33,7 +42,6 @@ def traverse_tree(tree):
     return size
 
 
-f = open('input07_ex.txt')
 f = open('input07.txt')
 Lines = f.readlines()
 tree = FileSyst('/', True)
@@ -46,7 +54,7 @@ for line in Lines:
         for c in tree.children:
             if c.name == current_dir_name:
                 tree = c
-    elif ' ls' in line:
+    elif '$ ls' in line:
         continue
     elif 'dir' in line:
         directory_name = line[line.index('dir')+3:].strip()
@@ -56,5 +64,6 @@ for line in Lines:
         tree.add_child(item, False, size=int(num))
 
 base.get_subdir_size()
+tot_size = 0
 tot_size = traverse_tree(base)
 print(tot_size)
