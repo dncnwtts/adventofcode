@@ -30,17 +30,20 @@ class FileSyst():
 def traverse_tree(tree):
     size = 0
     for c in tree.children:
-        #print('     '*c.level, c.name, c.size, c.is_dir)
-        if c.is_dir and c.size <= 100000:
-            print('*****'*c.level, c.name, c.size, c.is_dir)
-        else:
-            print('     '*c.level, c.name, c.size, c.is_dir)
         if c.is_dir:
             if c.size <= 100000:
                 size += c.size
             size += traverse_tree(c)
     return size
 
+def traverse_tree2(tree, goal_size):
+    size = 0
+    for c in tree.children:
+        if c.is_dir and c.size >= goal_size:
+            print(c.size)
+        if c.is_dir:
+            traverse_tree2(c, goal_size)
+    return size
 
 f = open('input07.txt')
 Lines = f.readlines()
@@ -67,3 +70,10 @@ base.get_subdir_size()
 tot_size = 0
 tot_size = traverse_tree(base)
 print(tot_size)
+
+
+tot_space = 70000000
+unused_goal = 30000000
+goal_size =unused_goal - (tot_space - base.size)
+
+traverse_tree2(base, goal_size)
