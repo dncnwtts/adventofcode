@@ -82,3 +82,4 @@ min_dists = []
 for i, j in zip(i_f, j_f):
     min_dists.append(dists[(i,j)])
 print(min(min_dists))
+plt.show()
