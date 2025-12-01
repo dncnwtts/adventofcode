@@ -24,32 +24,27 @@ int main() {
 	std::vector<std::string> v;
 
 	std::ifstream file("01_input.txt");
-	if (file.is_open()){
-		while(getline(file, s)){
-			v.push_back(s);
-		}
-	}
-	file.close();
+        while(std::getline(file, s)){
+        	v.push_back(s);
+        }
 
-	int length;
 	int dial = 50;
 	int password = 0;
 
 
 	for(auto i : v){
-	    length = i.size();
 	    if (i[0] == 'L') {
-	        dial = dial -  stoi(i.substr(1, length-1));
+	        dial -= stoi(i.substr(1));
 	    }
 	    else {
-	        dial = dial +  stoi(i.substr(1, length-1));
+	        dial += stoi(i.substr(1));
 	    }
 	    if (dial < 0) {
-		    dial = dial + 100;
+		    dial += 100;
 	    }
 	    dial = dial % 100;
 	    if (dial == 0) {
-		    password = password + 1;
+		    password++;
 	    }
 	}
 
@@ -62,8 +57,7 @@ int main() {
 	int dist;
 
 	for(auto i : v){
-	    length = i.size();
-	    dist = stoi(i.substr(1, length-1));
+	    dist = stoi(i.substr(1));
 	    n_passes = dist / 100;
 	    password = password + n_passes;
 	    dist = dist % 100;
@@ -72,22 +66,22 @@ int main() {
 	                dial = 100;
 	        }
 		if (dist > dial) {
-			password = password + 1;
+			password++;
 		}
-	        dial = dial -  dist;
+	        dial -=  dist;
 	    }
 	    else {
 		if (dist + dial > 100) {
-			password = password + 1;
+			password++;
 		}
-	        dial = dial +  dist;
+	        dial +=  dist;
 	    }
 	    dial = dial % 100;
 	    if (dial == 0) {
-		    password = password + 1;
+		    password++;
 	    }
 	    if (dial < 0) {
-		    dial = dial + 100;
+		    dial += 100;
 	    }
 
 	}
