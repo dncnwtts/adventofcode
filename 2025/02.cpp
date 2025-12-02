@@ -55,7 +55,12 @@ int part1()
 {
 
 
-	string testString("11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124");
+        ifstream inputStream;
+	string testString;
+
+	inputStream.open("02_input.txt");
+        inputStream >> testString;
+	inputStream.close();
 
 	long i;
 	long j;
@@ -107,8 +112,13 @@ int part1()
 int part2()
 {
 
+        ifstream inputStream;
+	string testString;
 
-	string testString("11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124");
+	inputStream.open("02_input.txt");
+        inputStream >> testString;
+	inputStream.close();
+
 
 	long i;
 	long j;
